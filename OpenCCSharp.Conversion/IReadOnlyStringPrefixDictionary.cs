@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenCCSharp.Conversion;
 
@@ -15,6 +11,9 @@ public interface IReadOnlyStringPrefixDictionary<TValue> : IReadOnlyDictionary<R
 
     TValue IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.this[ReadOnlyMemory<char> key] => this[key.Span];
 
+    bool IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.TryGetValue(ReadOnlyMemory<char> key, [MaybeNullWhen(false)] out TValue value)
+        => this.TryGetValue(key.Span, out value);
+
     bool TryGetValue(ReadOnlySpan<char> key, [MaybeNullWhen(false)] out TValue value);
 
     bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key);
@@ -24,4 +23,3 @@ public interface IReadOnlyStringPrefixDictionary<TValue> : IReadOnlyDictionary<R
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
-

@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Diagnostics;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 
 namespace OpenCCSharp.Conversion;
 
@@ -21,16 +19,16 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     public bool ContainsKey(ReadOnlyMemory<char> key) => _myDict.ContainsKey(key);
 
     /// <inheritdoc />
-    public bool TryGetValue(ReadOnlyMemory<char> key, out TValue value)
-    {
-        throw new NotImplementedException();
-    }
+    public bool TryGetValue(ReadOnlyMemory<char> key, [MaybeNullWhen(false)] out TValue value) => _myDict.TryGetValue(key, out value);
 
     /// <inheritdoc />
     public IEnumerable<ReadOnlyMemory<char>> Keys => _myDict.Keys;
 
     /// <inheritdoc />
     public IEnumerable<TValue> Values => _myDict.Values;
+
+    /// <inheritdoc />
+    public TValue this[ReadOnlyMemory<char> key] => _myDict[key];
 
     /// <inheritdoc />
     public TValue this[ReadOnlySpan<char> key]
