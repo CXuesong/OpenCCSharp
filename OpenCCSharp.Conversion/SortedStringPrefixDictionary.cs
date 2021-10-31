@@ -7,7 +7,24 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
 {
 
     private readonly SortedList<ReadOnlyMemory<char>, TValue> _myDict = new(CharMemoryComparer.Default);
-    private int maxKeyLength = 0;
+    private int _maxKeyLength = 0;
+
+    #region Mutation
+
+    public void Add(string key, TValue value)
+    {
+        _myDict.Add(key.AsMemory(), value);
+        _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
+    }
+
+    // n.b. It's caller's responsibility to keep key immutable.
+    public void Add(ReadOnlyMemory<char> key, TValue value)
+    {
+        _myDict.Add(key, value);
+        _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
+    }
+
+    #endregion
 
     /// <inheritdoc />
     public IEnumerator<KeyValuePair<ReadOnlyMemory<char>, TValue>> GetEnumerator() => _myDict.GetEnumerator();
@@ -18,6 +35,8 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     /// <inheritdoc />
     public bool ContainsKey(ReadOnlyMemory<char> key) => _myDict.ContainsKey(key);
 
+    /// <inheritdoc />
+    public bool ContainsKey(ReadOnlySpan<char> key) => BinarySearch(key) >= 0;
     /// <inheritdoc />
     public bool TryGetValue(ReadOnlyMemory<char> key, [MaybeNullWhen(false)] out TValue value) => _myDict.TryGetValue(key, out value);
 
@@ -57,7 +76,7 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     /// <inheritdoc />
     public bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key)
     {
-        for (var prefixLength = Math.Min(content.Length, this.maxKeyLength); prefixLength > 0; prefixLength--)
+        for (var prefixLength = Math.Min(content.Length, this._maxKeyLength); prefixLength > 0; prefixLength--)
         {
             var index = BinarySearch(content[..prefixLength]);
             if (index >= 0)
@@ -73,7 +92,7 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     /// <inheritdoc />
     public IEnumerable<ReadOnlyMemory<char>> EnumPrefixingKeys(ReadOnlySpan<char> content)
     {
-        for (var prefixLength = 0; prefixLength < maxKeyLength; prefixLength++)
+        for (var prefixLength = 0; prefixLength < _maxKeyLength; prefixLength++)
         {
             var index = BinarySearch(content[..prefixLength]);
             if (index >= 0)

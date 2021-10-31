@@ -14,6 +14,11 @@ public interface IReadOnlyStringPrefixDictionary<TValue> : IReadOnlyDictionary<R
     bool IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.TryGetValue(ReadOnlyMemory<char> key, [MaybeNullWhen(false)] out TValue value)
         => this.TryGetValue(key.Span, out value);
 
+    bool IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.ContainsKey(ReadOnlyMemory<char> key)
+        => this.ContainsKey(key.Span);
+
+    bool ContainsKey(ReadOnlySpan<char> key);
+
     bool TryGetValue(ReadOnlySpan<char> key, [MaybeNullWhen(false)] out TValue value);
 
     bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key);
