@@ -6,12 +6,12 @@ namespace OpenCCSharp.Conversion;
 public class ScriptConverter
 {
     private readonly IScriptLexer _lexer;
-    private readonly IReadOnlyStringPrefixDictionary<ReadOnlyMemory<char>> _conversionDict;
+    private readonly IStringDictionaryLookup<ReadOnlyMemory<char>> _conversionLookup;
 
-    public ScriptConverter(IScriptLexer lexer, IReadOnlyStringPrefixDictionary<ReadOnlyMemory<char>> conversionDict)
+    public ScriptConverter(IScriptLexer lexer, IStringDictionaryLookup<ReadOnlyMemory<char>> conversionLookup)
     {
         _lexer = lexer;
-        _conversionDict = conversionDict;
+        _conversionLookup = conversionLookup;
     }
 
     public void Convert(ReadOnlySpan<char> source, Span<char> destination, out int sourceConsumed, out int destinationConsumed, out bool completed)
@@ -31,7 +31,7 @@ public class ScriptConverter
             var segment = srcRest[..len];
             srcRest = source[len..];
             sourceConsumed += len;
-            if (_conversionDict.TryGetValue(segment, out var v))
+            if (_conversionLookup.TryGetValue(segment, out var v))
             {
                 if (destRest.Length < v.Length) return;
                 v.Span.CopyTo(destRest);
