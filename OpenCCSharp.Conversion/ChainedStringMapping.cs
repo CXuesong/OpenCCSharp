@@ -9,11 +9,20 @@ public class ChainedStringMapping : IStringMapping
 
     private readonly List<IStringMapping> _myDicts;
 
+    public ChainedStringMapping(params IStringMapping[] baseMappings)
+        : this((IEnumerable<IStringMapping>)baseMappings)
+    {
+    }
+
     public ChainedStringMapping(IEnumerable<IStringMapping> chainedMappings)
     {
         if (chainedMappings == null) throw new ArgumentNullException(nameof(chainedMappings));
         _myDicts = chainedMappings.ToList();
+        ChainedMappings = _myDicts.AsReadOnly();
     }
+
+    public IReadOnlyList<IStringMapping> ChainedMappings { get; }
+
 
     /// <inheritdoc />
     public ReadOnlyMemory<char> this[ReadOnlySpan<char> key]

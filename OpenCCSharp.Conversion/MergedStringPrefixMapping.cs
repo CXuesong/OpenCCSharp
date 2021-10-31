@@ -11,6 +11,20 @@ public class MergedStringPrefixMapping : IStringPrefixMapping
 
     private readonly List<IStringPrefixMapping> _myDicts;
 
+    public MergedStringPrefixMapping(params IStringPrefixMapping[] baseMappings)
+        : this((IEnumerable<IStringPrefixMapping>)baseMappings)
+    {
+    }
+
+    public MergedStringPrefixMapping(IEnumerable<IStringPrefixMapping> baseMappings)
+    {
+        if (baseMappings == null) throw new ArgumentNullException(nameof(baseMappings));
+        _myDicts = baseMappings.ToList();
+        BaseMappings = _myDicts.AsReadOnly();
+    }
+
+    public IReadOnlyList<IStringPrefixMapping> BaseMappings { get; }
+
     /// <inheritdoc />
     public ReadOnlyMemory<char> this[ReadOnlySpan<char> key]
     {
