@@ -30,7 +30,7 @@ public class ScriptConverter
         while ((len = _lexer.GetNextSegmentLength(srcRest)) > 0)
         {
             var segment = srcRest[..len];
-            srcRest = source[len..];
+            srcRest = srcRest[len..];
             sourceConsumed += len;
             if (_conversionLookup.TryGetValue(segment, out var v))
             {
@@ -43,7 +43,7 @@ public class ScriptConverter
             {
                 // Copy original segment content
                 if (destRest.Length < len) return;
-                srcRest[..len].CopyTo(destRest);
+                segment.CopyTo(destRest);
                 destRest = destRest[len..];
                 destinationConsumed += len;
             }

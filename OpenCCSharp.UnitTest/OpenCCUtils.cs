@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using O9d.Json.Formatting;
 using OpenCCSharp.Conversion;
 
 namespace OpenCCSharp.UnitTest;
@@ -41,8 +42,12 @@ internal static class OpenCCUtils
     public static async Task<ScriptConverter> CreateConverterFromAsync(string configFileName)
     {
         ConversionConfigRoot config;
-        using (var fs = File.OpenRead(Path.Join(OpenCCConversionConfigDir, configFileName)))
-            config = JsonSerializer.Deserialize<ConversionConfigRoot>(fs) ?? throw new InvalidOperationException("Config JSON resolves to null.");
+        await using (var fs = File.OpenRead(Path.Join(OpenCCConversionConfigDir, configFileName)))
+            config = JsonSerializer.Deserialize<ConversionConfigRoot>(fs, new JsonSerializerOptions
+                     {
+                         PropertyNamingPolicy = new JsonSnakeCaseNamingPolicy()
+                     })
+                     ?? throw new InvalidOperationException("Config JSON resolves to null.");
         var lexer = await config.Segmentation.ResolveAsync();
         var conversionChain = await Utility.WhenAll(config.ConversionChain.Select(c => c.Dict.ResolveAsync()));
         return new ScriptConverter(lexer, new ChainedStringMapping((IEnumerable<IStringPrefixMapping>)conversionChain));

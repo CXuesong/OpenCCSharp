@@ -19,7 +19,7 @@ public class OpenCCTests : UnitTestsBase
     public async Task Test1()
     {
         var s2tw = await OpenCCUtils.CreateConverterFromAsync("s2tw.json");
-        Output.WriteLine(s2tw.Convert("≤‚ ‘"));
+        Assert.Equal("úy‘á", s2tw.Convert("≤‚ ‘"));
     }
 
 }
