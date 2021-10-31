@@ -4,15 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenCCSharp.Conversion;
 
-public class ChainedStringDictionaryLookup : IStringDictionaryLookup<ReadOnlyMemory<char>>
+public class ChainedStringMapping : IStringMapping
 {
 
-    private readonly List<IStringDictionaryLookup<ReadOnlyMemory<char>>> _myDicts;
+    private readonly List<IStringMapping> _myDicts;
 
-    public ChainedStringDictionaryLookup(IEnumerable<IStringDictionaryLookup<ReadOnlyMemory<char>>> chainedDicts)
+    public ChainedStringMapping(IEnumerable<IStringMapping> chainedMappings)
     {
-        if (chainedDicts == null) throw new ArgumentNullException(nameof(chainedDicts));
-        _myDicts = chainedDicts.ToList();
+        if (chainedMappings == null) throw new ArgumentNullException(nameof(chainedMappings));
+        _myDicts = chainedMappings.ToList();
     }
 
     /// <inheritdoc />

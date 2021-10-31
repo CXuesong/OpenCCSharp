@@ -3,22 +3,22 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenCCSharp.Conversion;
 
-public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDictionary<TValue>
+public class SortedStringPrefixDictionary : IReadOnlyStringPrefixDictionary
 {
 
-    private readonly SortedList<ReadOnlyMemory<char>, TValue> _myDict = new(CharMemoryComparer.Default);
+    private readonly SortedList<ReadOnlyMemory<char>, ReadOnlyMemory<char>> _myDict = new(CharMemoryComparer.Default);
     private int _maxKeyLength = 0;
 
     #region Mutation
 
-    public void Add(string key, TValue value)
+    public void Add(string key, ReadOnlyMemory<char> value)
     {
         _myDict.Add(key.AsMemory(), value);
         _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
     }
 
     // n.b. It's caller's responsibility to keep key immutable.
-    public void Add(ReadOnlyMemory<char> key, TValue value)
+    public void Add(ReadOnlyMemory<char> key, ReadOnlyMemory<char> value)
     {
         _myDict.Add(key, value);
         _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
@@ -27,7 +27,7 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     #endregion
 
     /// <inheritdoc />
-    public IEnumerator<KeyValuePair<ReadOnlyMemory<char>, TValue>> GetEnumerator() => _myDict.GetEnumerator();
+    public IEnumerator<KeyValuePair<ReadOnlyMemory<char>, ReadOnlyMemory<char>>> GetEnumerator() => _myDict.GetEnumerator();
 
     /// <inheritdoc />
     public int Count => _myDict.Count;
@@ -37,20 +37,29 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
 
     /// <inheritdoc />
     public bool ContainsKey(ReadOnlySpan<char> key) => BinarySearch(key) >= 0;
+
     /// <inheritdoc />
-    public bool TryGetValue(ReadOnlyMemory<char> key, [MaybeNullWhen(false)] out TValue value) => _myDict.TryGetValue(key, out value);
+    public bool TryGetValue(ReadOnlyMemory<char> key, out ReadOnlyMemory<char> value)
+    {
+        if (key.Length > _maxKeyLength)
+        {
+            value = default;
+            return false;
+        }
+        return _myDict.TryGetValue(key, out value);
+    }
 
     /// <inheritdoc />
     public IEnumerable<ReadOnlyMemory<char>> Keys => _myDict.Keys;
 
     /// <inheritdoc />
-    public IEnumerable<TValue> Values => _myDict.Values;
+    public IEnumerable<ReadOnlyMemory<char>> Values => _myDict.Values;
 
     /// <inheritdoc />
-    public TValue this[ReadOnlyMemory<char> key] => _myDict[key];
+    public ReadOnlyMemory<char> this[ReadOnlyMemory<char> key] => _myDict[key];
 
     /// <inheritdoc />
-    public TValue this[ReadOnlySpan<char> key]
+    public ReadOnlyMemory<char> this[ReadOnlySpan<char> key]
     {
         get
         {
@@ -61,7 +70,7 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     }
 
     /// <inheritdoc />
-    public bool TryGetValue(ReadOnlySpan<char> key, [MaybeNullWhen(false)] out TValue value)
+    public bool TryGetValue(ReadOnlySpan<char> key, out ReadOnlyMemory<char> value)
     {
         var index = BinarySearch(key);
         if (index >= 0)
@@ -92,14 +101,16 @@ public class SortedStringPrefixDictionary<TValue> : IReadOnlyStringPrefixDiction
     /// <inheritdoc />
     public IEnumerable<ReadOnlyMemory<char>> EnumPrefixingKeys(ReadOnlySpan<char> content)
     {
+        var keys = new List<ReadOnlyMemory<char>>();
         for (var prefixLength = 0; prefixLength < _maxKeyLength; prefixLength++)
         {
             var index = BinarySearch(content[..prefixLength]);
             if (index >= 0)
             {
-                yield return _myDict.Keys[index];
+                keys.Add(_myDict.Keys[index]);
             }
         }
+        return keys;
     }
 
     private int BinarySearch(ReadOnlySpan<char> key)

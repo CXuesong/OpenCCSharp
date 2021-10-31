@@ -5,10 +5,11 @@ namespace OpenCCSharp.Conversion;
 
 public class ScriptConverter
 {
-    private readonly IScriptLexer _lexer;
-    private readonly IStringDictionaryLookup<ReadOnlyMemory<char>> _conversionLookup;
 
-    public ScriptConverter(IScriptLexer lexer, IStringDictionaryLookup<ReadOnlyMemory<char>> conversionLookup)
+    private readonly IScriptLexer _lexer;
+    private readonly IStringMapping _conversionLookup;
+
+    public ScriptConverter(IScriptLexer lexer, IStringMapping conversionLookup)
     {
         _lexer = lexer;
         _conversionLookup = conversionLookup;

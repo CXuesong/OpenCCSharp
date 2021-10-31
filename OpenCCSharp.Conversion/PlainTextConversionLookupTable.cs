@@ -9,7 +9,7 @@ namespace OpenCCSharp.Conversion
     public static class PlainTextConversionLookupTable
     {
 
-        public static async Task Load(SortedStringPrefixDictionary<ReadOnlyMemory<char>> dict, TextReader reader)
+        public static async Task Load(SortedStringPrefixDictionary dict, TextReader reader)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (reader == null) throw new ArgumentNullException(nameof(reader));
@@ -23,7 +23,7 @@ namespace OpenCCSharp.Conversion
             }
         }
 
-        public static async Task Load(SortedStringPrefixDictionary<ReadOnlyMemory<char>> dict, Stream stream)
+        public static async Task Load(SortedStringPrefixDictionary dict, Stream stream)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (stream == null) throw new ArgumentNullException(nameof(stream));
@@ -31,7 +31,7 @@ namespace OpenCCSharp.Conversion
             await Load(dict, reader);
         }
 
-        public static async Task Load(SortedStringPrefixDictionary<ReadOnlyMemory<char>> dict, string filePath)
+        public static async Task Load(SortedStringPrefixDictionary dict, string filePath)
         {
             if (dict == null) throw new ArgumentNullException(nameof(dict));
             if (filePath == null) throw new ArgumentNullException(nameof(filePath));

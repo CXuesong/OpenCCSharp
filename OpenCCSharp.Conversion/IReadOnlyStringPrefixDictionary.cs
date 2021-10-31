@@ -4,38 +4,38 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenCCSharp.Conversion;
 
-public interface IStringDictionaryLookup<TValue>
+public interface IStringMapping
 {
 
-    TValue this[ReadOnlySpan<char> key] { get; }
+    ReadOnlyMemory<char> this[ReadOnlySpan<char> key] { get; }
 
     bool ContainsKey(ReadOnlySpan<char> key);
 
-    bool TryGetValue(ReadOnlySpan<char> key, [MaybeNullWhen(false)] out TValue value);
+    bool TryGetValue(ReadOnlySpan<char> key, out ReadOnlyMemory<char> value);
 
 }
 
-public interface IReadOnlyStringDictionary<TValue> : IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>, IStringDictionaryLookup<TValue>
-{
-
-    TValue IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.this[ReadOnlyMemory<char> key] => this[key.Span];
-
-    bool IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.TryGetValue(ReadOnlyMemory<char> key, [MaybeNullWhen(false)] out TValue value)
-        => this.TryGetValue(key.Span, out value);
-
-    bool IReadOnlyDictionary<ReadOnlyMemory<char>, TValue>.ContainsKey(ReadOnlyMemory<char> key)
-        => this.ContainsKey(key.Span);
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-}
-
-public interface IReadOnlyStringPrefixDictionary<TValue> : IReadOnlyStringDictionary<TValue>
+public interface IStringPrefixMapping : IStringMapping
 {
 
     bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key);
 
     IEnumerable<ReadOnlyMemory<char>> EnumPrefixingKeys(ReadOnlySpan<char> content);
+
+}
+
+public interface IReadOnlyStringPrefixDictionary : IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>, IStringMapping, IStringPrefixMapping
+{
+
+    ReadOnlyMemory<char> IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>.this[ReadOnlyMemory<char> key] => this[key.Span];
+
+    bool IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>.TryGetValue(ReadOnlyMemory<char> key, out ReadOnlyMemory<char> value)
+        => this.TryGetValue(key.Span, out value);
+
+    bool IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>.ContainsKey(ReadOnlyMemory<char> key)
+        => this.ContainsKey(key.Span);
+
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 }
