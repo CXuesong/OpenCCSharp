@@ -1,13 +1,37 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace OpenCCSharp.Conversion;
 
+[DebuggerDisplay("Count = {Count}, MaxKeyLength = {_maxKeyLength}")]
 public class SortedStringPrefixDictionary : IReadOnlyStringPrefixDictionary
 {
 
-    private readonly SortedList<ReadOnlyMemory<char>, ReadOnlyMemory<char>> _myDict = new(CharMemoryComparer.Default);
+    private readonly SortedList<ReadOnlyMemory<char>, ReadOnlyMemory<char>> _myDict;
     private int _maxKeyLength = 0;
+
+    public SortedStringPrefixDictionary() : this(null)
+    {
+    }
+
+    public SortedStringPrefixDictionary(IEnumerable<KeyValuePair<ReadOnlyMemory<char>, ReadOnlyMemory<char>>>? dict)
+    {
+        if (dict is IDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>> d)
+        {
+            _myDict = new(d, CharMemoryComparer.Default);
+            _maxKeyLength = _myDict.Count > 0 ? _myDict.Keys.Select(k => k.Length).Max() : 0;
+        }
+        else if (dict is not null)
+        {
+            _myDict = new(dict.TryGetNonEnumeratedCount(out var count) ? count : 0, CharMemoryComparer.Default);
+            foreach (var (key, value) in dict) Add(key, value);
+        }
+        else
+        {
+            _myDict = new(CharMemoryComparer.Default);
+        }
+    }
 
     #region Mutation
 

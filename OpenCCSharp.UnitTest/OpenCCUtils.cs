@@ -21,6 +21,12 @@ internal static class OpenCCUtils
     // <string, Task<SortedStringPrefixDictionary> | SortedStringPrefixDictionary>
     private static readonly ConcurrentDictionary<string, object> dictCache = new();
 
+    public static async ValueTask<SortedStringPrefixDictionary> CreateDictionaryFromAsync(string dictFileName)
+    {
+        var dict = await GetDictionaryFromAsync(dictFileName);
+        return new SortedStringPrefixDictionary(dict);
+    }
+
     private static ValueTask<SortedStringPrefixDictionary> GetDictionaryFromAsync(string dictFileName)
     {
         static async Task<SortedStringPrefixDictionary> ValueFactory(string fn, ConcurrentDictionary<string, object> dc)

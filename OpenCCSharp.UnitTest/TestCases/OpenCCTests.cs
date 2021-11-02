@@ -18,8 +18,8 @@ public class OpenCCTests : UnitTestsBase
     [Fact]
     public async Task Test1()
     {
-        var s2tw = await OpenCCUtils.CreateConverterFromAsync("s2tw.json");
-        Assert.Equal("測試", s2tw.Convert("测试"));
+        var s2t = await OpenCCUtils.CreateConverterFromAsync("s2t.json");
+        Assert.Equal("中文轉換測試", s2t.Convert("中文信息转换测试"));
     }
 
 }

@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenCCSharp.Conversion;
 
+[DebuggerDisplay("ChainedMappings = {ChainedMappings}")]
 public class ChainedStringMapping : IStringMapping
 {
 
