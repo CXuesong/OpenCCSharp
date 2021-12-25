@@ -33,7 +33,13 @@ internal static class OpenCCUtils
         {
             await Task.Yield();
             var dict = new SortedStringPrefixDictionary();
-            await PlainTextConversionLookupTable.Load(dict, Path.Join(OpenCCDictionaryDir, fn));
+            var segments = fn.Split('|');
+
+            var loadOptions = PlainTextConversionLookupTableLoadOptions.None;
+            if (segments.Length > 1 && segments[1].Equals("Reverse", StringComparison.OrdinalIgnoreCase))
+                loadOptions |= PlainTextConversionLookupTableLoadOptions.ReverseEntries;
+
+            await PlainTextConversionLookupTable.LoadAsync(dict, Path.Join(OpenCCDictionaryDir, segments[0]), loadOptions);
             dc[fn] = dict;
             return dict;
         }

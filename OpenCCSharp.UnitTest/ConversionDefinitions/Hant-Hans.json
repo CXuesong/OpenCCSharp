@@ -1,0 +1,12 @@
+{
+  "From": "zh-Hant",
+  "To": "zh-Hans",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "TSPhrases.txt",
+        "TSCharacters.txt"
+      ]
+    }
+  ] 
+}

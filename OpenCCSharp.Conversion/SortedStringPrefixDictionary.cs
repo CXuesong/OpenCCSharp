@@ -54,6 +54,28 @@ public class SortedStringPrefixDictionary : IReadOnlyStringPrefixDictionary
         _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
     }
 
+    public bool TryAdd(string key, string value)
+    {
+        if (!_myDict.TryAdd(key.AsMemory(), value.AsMemory())) return false;
+        _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
+        return true;
+    }
+
+    public bool TryAdd(string key, ReadOnlyMemory<char> value)
+    {
+        if (!_myDict.TryAdd(key.AsMemory(), value)) return false;
+        _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
+        return true;
+    }
+
+    // n.b. It's caller's responsibility to keep key immutable.
+    public bool TryAdd(ReadOnlyMemory<char> key, ReadOnlyMemory<char> value)
+    {
+        if (!_myDict.TryAdd(key, value)) return false;
+        _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
+        return true;
+    }
+
     #endregion
 
     /// <inheritdoc />

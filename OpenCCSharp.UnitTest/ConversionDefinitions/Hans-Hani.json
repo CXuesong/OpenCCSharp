@@ -1,6 +1,6 @@
 {
   "From": "zh-Hans",
-  "To": "zh-Hant-TW",
+  "To": "ja-Hani",
   "ConversionSteps": [
     {
       "Dictionaries": [
@@ -10,10 +10,7 @@
     },
     {
       "Dictionaries": [
-        "TWVariants.txt",
-        "TWPhrasesIT.txt",
-        "TWPhrasesName.txt",
-        "TWPhrasesOther.txt"
+        "JPVariants.txt"
       ]
     }
   ] 

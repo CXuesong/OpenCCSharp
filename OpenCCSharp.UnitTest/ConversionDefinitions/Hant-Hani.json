@@ -1,0 +1,11 @@
+{
+  "From": "zh-Hant",
+  "To": "ja-Hani",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "JPVariants.txt"
+      ]
+    }
+  ] 
+}
