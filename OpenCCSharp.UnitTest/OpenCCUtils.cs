@@ -27,7 +27,7 @@ internal static class OpenCCUtils
         return new SortedStringPrefixDictionary(dict);
     }
 
-    private static ValueTask<SortedStringPrefixDictionary> GetDictionaryFromAsync(string dictFileName)
+    public static ValueTask<SortedStringPrefixDictionary> GetDictionaryFromAsync(string dictFileName)
     {
         static async Task<SortedStringPrefixDictionary> ValueFactory(string fn, ConcurrentDictionary<string, object> dc)
         {
@@ -51,7 +51,8 @@ internal static class OpenCCUtils
         await using (var fs = File.OpenRead(Path.Join(OpenCCConversionConfigDir, configFileName)))
             config = JsonSerializer.Deserialize<ConversionConfigRoot>(fs, new JsonSerializerOptions
                      {
-                         PropertyNamingPolicy = new JsonSnakeCaseNamingPolicy()
+                         PropertyNamingPolicy = new JsonSnakeCaseNamingPolicy(),
+                         ReadCommentHandling = JsonCommentHandling.Skip
                      })
                      ?? throw new InvalidOperationException("Config JSON resolves to null.");
         var lexer = await config.Segmentation.ResolveAsync();
@@ -75,12 +76,25 @@ internal static class OpenCCUtils
 
     private sealed class Dict
     {
+
+        // Some dictionaries are merged from others: https://github.com/BYVoid/OpenCC/blob/6ee1fc7e7993162c2038b423f6db31f3d6e20f30/node/dicts.gypi
+        private static readonly Dictionary<string, string[]> knownMergedDicts = new()
+        {
+            { "TWPhrases.ocd2", new[] { "TWPhrasesIT.txt", "TWPhrasesName.txt", "TWPhrasesOther.txt" } }
+        };
+
         public string Type { get; set; }
         public List<Dict> Dicts { get; set; }
         public string File { get; set; }
 
         public async ValueTask<IStringPrefixMapping> ResolveAsync()
         {
+            if (!string.IsNullOrEmpty(File) && knownMergedDicts.TryGetValue(File, out var dicts))
+                return await new Dict
+                {
+                    Type = "group",
+                    Dicts = dicts.Select(fn => new Dict { Type = "text", File = fn }).ToList()
+                }.ResolveAsync();
             switch (Type)
             {
                 case "group":

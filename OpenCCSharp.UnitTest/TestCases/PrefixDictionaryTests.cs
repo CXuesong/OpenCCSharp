@@ -17,9 +17,18 @@ namespace OpenCCSharp.UnitTest.TestCases
         }
 
         [Fact]
-        public async Task SortedStringPrefixDictionaryTest()
+        public void SortedStringPrefixDictionaryTest()
         {
-            var dict = await OpenCCUtils.CreateDictionaryFromAsync("TWPhrasesOther.txt");
+            var dict = new SortedStringPrefixDictionary
+            {
+                { "B", "b" },
+                { "A", "a" },
+                { "C", "c" },
+                { "D", "d" },
+                { "Z", "z" },
+                { "E", "e" },
+                { "F", "f" },
+            };
             // Sanity check.
             Assert.NotEmpty(dict);
             Assert.All(dict, p =>

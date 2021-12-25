@@ -1,0 +1,20 @@
+{
+  "From": "zh-Hans",
+  "To": "zh-Hant-TW",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "STPhrases.txt",
+        "STCharacters.txt",
+        "TWVariants.txt"
+      ]
+    },
+    {
+      "Dictionaries": [
+        "TWPhrasesIT.txt",
+        "TWPhrasesName.txt",
+        "TWPhrasesOther.txt"
+      ]
+    }
+  ] 
+}
