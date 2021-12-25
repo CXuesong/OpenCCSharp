@@ -118,15 +118,15 @@ namespace OpenCCSharp.Conversion
             if (underlyingConverters.Count == 0) return source.ToString();
             if (underlyingConverters.Count == 1) return underlyingConverters[0].Convert(source);
             char[]? buffer = null;
-            var sourceLength = source.Length;
+            var sourceLocal = source;
             try
             {
                 foreach (var converter in underlyingConverters)
                 {
-                    var converted = converter.GetConvertedBuffers(source, -1, out var sourceConsumed, out var destConsumed);
+                    var converted = converter.GetConvertedBuffers(sourceLocal, -1, out var sourceConsumed, out var destConsumed);
                     try
                     {
-                        Debug.Assert(sourceConsumed == sourceLength);
+                        Debug.Assert(sourceConsumed == sourceLocal.Length);
                         if (buffer == null || buffer.Length < destConsumed)
                         {
                             if (buffer != null) ArrayPool<char>.Shared.Return(buffer);
@@ -138,14 +138,14 @@ namespace OpenCCSharp.Conversion
                             Array.Copy(b, 0, buffer, pos, len);
                             pos += len;
                         }
-                        sourceLength = destConsumed;
+                        sourceLocal = buffer.AsSpan(0, destConsumed);
                     }
                     finally
                     {
                         converter.ReleaseConvertedBuffers(converted);
                     }
                 }
-                return new string(buffer!, 0, sourceLength);
+                return new string(buffer!, 0, sourceLocal.Length);
             }
             finally
             {
