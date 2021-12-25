@@ -34,6 +34,12 @@ public class SortedStringPrefixDictionary : IReadOnlyStringPrefixDictionary
     }
 
     #region Mutation
+    
+    public void Add(string key, string value)
+    {
+        _myDict.Add(key.AsMemory(), value.AsMemory());
+        _maxKeyLength = Math.Max(_maxKeyLength, key.Length);
+    }
 
     public void Add(string key, ReadOnlyMemory<char> value)
     {
@@ -141,7 +147,7 @@ public class SortedStringPrefixDictionary : IReadOnlyStringPrefixDictionary
     {
         var keys = _myDict.Keys;
         int lo = 0, hi = keys.Count - 1;
-        while (lo < hi)
+        while (lo <= hi)
         {
             var m = lo + (hi - lo) / 2;
             var diff = CharMemoryComparer.CompareBySpan(keys[m], key);
