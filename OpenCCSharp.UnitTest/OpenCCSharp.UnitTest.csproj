@@ -25,6 +25,7 @@
   <ItemGroup>
     <Content Include="$(ProjectDir)../vendor/OpenCC/data/config/**/*" Link="vendor/OpenCC/config/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="$(ProjectDir)../vendor/OpenCC/data/dictionary/**/*" Link="vendor/OpenCC/dictionary/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(ProjectDir)../vendor/OpenCC/test/testcases/*" Link="vendor/OpenCC/testcases/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

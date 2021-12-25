@@ -1,0 +1,13 @@
+{
+  "From": "ja-Hani",
+  "To": "zh-Hant",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "JPShinjitaiPhrases.txt",
+        "JPShinjitaiCharacters.txt",
+        "JPVariants.txt|Reverse"
+      ]
+    }
+  ] 
+}

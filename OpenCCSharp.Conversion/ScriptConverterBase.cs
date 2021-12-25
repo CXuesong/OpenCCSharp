@@ -60,7 +60,7 @@ namespace OpenCCSharp.Conversion
                     // Consumed source / dest
                     sourceConsumed += sourceConsumedLocal;
                     destConsumed += destConsumedLocal;
-                    rest = source[sourceConsumedLocal..];
+                    rest = rest[sourceConsumedLocal..];
                 } while (!rest.IsEmpty);
                 successful = true;
                 return buffers;

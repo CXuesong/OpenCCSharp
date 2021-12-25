@@ -34,22 +34,12 @@ public class ScriptConverter : ScriptConverterBase
         {
             var segment = srcRest[..len];
             srcRest = srcRest[len..];
+            var converted = _conversionLookup.TryGetValue(segment, out var v) ? v.Span : segment;
+            if (destRest.Length < converted.Length) return;
+            converted.CopyTo(destRest);
+            destRest = destRest[converted.Length..];
             sourceConsumed += len;
-            if (_conversionLookup.TryGetValue(segment, out var v))
-            {
-                if (destRest.Length < v.Length) return;
-                v.Span.CopyTo(destRest);
-                destRest = destRest[v.Length..];
-                destinationConsumed += v.Length;
-            }
-            else
-            {
-                // Copy original segment content
-                if (destRest.Length < len) return;
-                segment.CopyTo(destRest);
-                destRest = destRest[len..];
-                destinationConsumed += len;
-            }
+            destinationConsumed += converted.Length;
         }
         Debug.Assert(srcRest.IsEmpty);
         completed = true;

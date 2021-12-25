@@ -18,8 +18,16 @@ internal static class OpenCCUtils
 
     public static readonly string OpenCCDictionaryDir = Path.Join(typeof(OpenCCUtils).Assembly.Location, "../vendor/OpenCC/dictionary");
 
+    public static readonly string OpenCCTestCasesDir = Path.Join(typeof(OpenCCUtils).Assembly.Location, "../vendor/OpenCC/testcases");
+
     // <string, Task<SortedStringPrefixDictionary> | SortedStringPrefixDictionary>
     private static readonly ConcurrentDictionary<string, object> dictCache = new();
+
+    public static IEnumerable<(string Input, string Output)> ReadTestCases(string caseSetName)
+    {
+        return File.ReadLines(Path.Join(OpenCCTestCasesDir, caseSetName + ".in"))
+            .Zip(File.ReadLines(Path.Join(OpenCCTestCasesDir, caseSetName + ".ans")));
+    }
 
     public static async ValueTask<SortedStringPrefixDictionary> CreateDictionaryFromAsync(string dictFileName)
     {
