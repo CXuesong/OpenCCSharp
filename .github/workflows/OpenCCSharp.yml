@@ -41,7 +41,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: "OpenCCSharp-${{ matrix.config }}"
+          name: "OpenCCSharp-${{ matrix.os }}-${{ matrix.config }}"
           path: ./OpenCCSharp.*/bin/
       - name: Test
         shell: pwsh
