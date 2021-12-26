@@ -31,10 +31,10 @@ public class ConverterTests : UnitTestsBase
         var t2s = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hant, ChineseConversionVariant.Hans);
         var s2twp = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hans, ChineseConversionVariant.TW);
         var tw2sp = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.TW, ChineseConversionVariant.Hans);
-        AssertConversionPair(s2t, t2s, "µ÷ÊÔ", "Õ{Ô‡");
-        AssertConversionPair(s2twp, tw2sp, "µ÷ÊÔ", "³ıåe");
-        AssertConversionPair(s2t, t2s, "²é¿´ÖĞÎÄ·±¼ò×ª»»µ¥Ôª²âÊÔ½á¹û£¬ÒÔµ÷ÊÔ¿ÉÄÜ³öÏÖµÄ´úÂëÂß¼­´íÎó¡£", "²é¿´ÖĞÎÄ·±º†ŞD“Q†ÎÔªœyÔ‡½Y¹û£¬ÒÔÕ{Ô‡¿ÉÄÜ³ö¬FµÄ´ú´aß‰İ‹åeÕ`¡£");
-        AssertConversionPair(s2twp, tw2sp, "²é¿´ÖĞÎÄ·±¼ò×ª»»µ¥Ôª²âÊÔ½á¹û£¬ÒÔµ÷ÊÔ¿ÉÄÜ³öÏÖµÄ´úÂëÂß¼­´íÎó¡£", "™zÒ•ÖĞÎÄ·±º†ŞD“Q†ÎÔªœyÔ‡½Y¹û£¬ÒÔ³ıåe¿ÉÄÜ³ö¬FµÄ³ÌÊ½´aß‰İ‹åeÕ`¡£");
+        AssertConversionPair(s2t, t2s, "è°ƒè¯•", "èª¿è©¦");
+        AssertConversionPair(s2twp, tw2sp, "è°ƒè¯•", "é™¤éŒ¯");
+        AssertConversionPair(s2t, t2s, "æŸ¥çœ‹ä¸­æ–‡ç¹ç®€è½¬æ¢å•å…ƒæµ‹è¯•ç»“æœï¼Œä»¥è°ƒè¯•å¯èƒ½å‡ºç°çš„ä»£ç é€»è¾‘é”™è¯¯ã€‚", "æŸ¥çœ‹ä¸­æ–‡ç¹ç°¡è½‰æ›å–®å…ƒæ¸¬è©¦çµæœï¼Œä»¥èª¿è©¦å¯èƒ½å‡ºç¾çš„ä»£ç¢¼é‚è¼¯éŒ¯èª¤ã€‚");
+        AssertConversionPair(s2twp, tw2sp, "æŸ¥çœ‹ä¸­æ–‡ç¹ç®€è½¬æ¢å•å…ƒæµ‹è¯•ç»“æœï¼Œä»¥è°ƒè¯•å¯èƒ½å‡ºç°çš„ä»£ç é€»è¾‘é”™è¯¯ã€‚", "æª¢è¦–ä¸­æ–‡ç¹ç°¡è½‰æ›å–®å…ƒæ¸¬è©¦çµæœï¼Œä»¥é™¤éŒ¯å¯èƒ½å‡ºç¾çš„ç¨‹å¼ç¢¼é‚è¼¯éŒ¯èª¤ã€‚");
     }
 
     /// <summary>
