@@ -39,7 +39,8 @@ internal static class ConversionPresetHelper
         return dictCache.GetOrAdd(dictFileName, static (fn, dc) => ValueFactory(fn, dc), dictCache) switch
         {
             Task<SortedStringPrefixDictionary> t => new(t),
-            SortedStringPrefixDictionary d => new(d)
+            SortedStringPrefixDictionary d => new(d),
+            _ => throw new InvalidOperationException(),
         };
     }
 
@@ -66,14 +67,14 @@ internal static class ConversionPresetHelper
 
     private sealed class ConversionStep
     {
-        public List<string> Dictionaries { get; set; }
+        public List<string> Dictionaries { get; set; } = default!;
     }
 
     private sealed class ConversionDefinitionRoot
     {
-        public string From { get; set; }
-        public string To { get; set; }
-        public List<ConversionStep> ConversionSteps { get; set; }
+        public string From { get; set; } = default!;
+        public string To { get; set; } = default!;
+        public List<ConversionStep> ConversionSteps { get; set; } = default!;
     }
 
 }

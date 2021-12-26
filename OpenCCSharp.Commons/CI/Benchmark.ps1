@@ -23,6 +23,6 @@ Write-Host
 # Using * as filter may result in no match in Linux.
 dotnet run --project ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj `
     --no-build -c $Configuration `
-    -- --filter OpenCCSharp.UnitTest*
+    -- --filter "*"
 
 Exit $LASTEXITCODE
