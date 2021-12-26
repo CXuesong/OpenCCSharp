@@ -11,12 +11,12 @@ trap {
 # Assumes $PWD is the repo root
 
 Write-Host "Benchmark cases:"
-dotnet run ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj `
+dotnet run --project ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj `
     --no-build -c $Configuration `
     -- --list tree
 
 Write-Host
-dotnet run ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj `
+dotnet run --project ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj `
     --no-build -c $Configuration `
     -- --filter *
 
