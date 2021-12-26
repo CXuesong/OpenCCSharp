@@ -46,8 +46,10 @@ jobs:
       - name: Test
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Test.ps1 -Configuration ${{ matrix.config }}"
+
   benchmark:
     name: "Benchmark ${{ matrix.os }} / ${{ matrix.config }}"
+    needs: build_and_test
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
