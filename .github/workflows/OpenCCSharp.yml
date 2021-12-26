@@ -38,6 +38,7 @@ jobs:
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Build.ps1 -Configuration ${{ matrix.config }}"
       - name: Upload Build Artifacts
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: "OpenCCSharp-${{ matrix.config }}"
