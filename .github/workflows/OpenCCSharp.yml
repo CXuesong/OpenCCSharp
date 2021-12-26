@@ -37,7 +37,7 @@ jobs:
       - name: Build
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Build.ps1 -Configuration ${{ matrix.config }}"
-      - name: Upload Build Artifacts
+      - name: Upload build artifacts
         if: always()
         uses: actions/upload-artifact@v2
         with:
@@ -46,4 +46,37 @@ jobs:
       - name: Test
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Test.ps1 -Configuration ${{ matrix.config }}"
+  benchmark:
+    name: "Benchmark ${{ matrix.os }} / ${{ matrix.config }}"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "windows-latest"]
+        config: ["Release"]
+    env:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            5.0.x
+            6.0.x
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: "OpenCCSharp-${{ matrix.os }}-${{ matrix.config }}"
+      - name: Benchmark
+        shell: pwsh
+        run: "./OpenCCSharp.Commons/CI/Benchmark.ps1 -Configuration ${{ matrix.config }}"
+      - name: Upload benchmark result
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "OpenCCSharp.Benchmark-${{ matrix.os }}-${{ matrix.config }}"
+          path: ./OpenCCSharp.Benchmarking/bin/Release/*/BenchmarkDotNet.Artifacts
 
