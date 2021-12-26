@@ -1,10 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../OpenCCSharp.Commons/OpenCCSharp.Commons.props" />
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

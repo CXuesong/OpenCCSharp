@@ -1,0 +1,33 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)/OpenCCSharp.Commons.props" />
+
+  <PropertyGroup>
+    <!-- Here are the default targets. Projects may override on this value with higher requirements. -->
+    <TargetFrameworks>net5.0</TargetFrameworks>
+    <Version>0.0.1</Version>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Copyright>Copyright (C) CXuesong 2021</Copyright>
+    <PackageReleaseNotes>See https://github.com/CXuesong/OpenCCSharp/releases .</PackageReleaseNotes>
+    <PackageTags>OpenCC Chinese Text Conversion</PackageTags>
+    <NeutralLanguage>en-us</NeutralLanguage>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/CXuesong/OpenCCSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CXuesong/OpenCCSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Authors>CXuesong</Authors>
+    <Company />
+    <NoWarn>$(NoWarn);1701;1702;1705;1573;1591;NU5105</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)/OpenCCSharp.snk</AssemblyOriginatorKeyFile>
+    <PublishRepositoryUrl>True</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

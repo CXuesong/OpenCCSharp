@@ -7,9 +7,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.Conversion", "O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.UnitTest", "OpenCCSharp.UnitTest\OpenCCSharp.UnitTest.csproj", "{A4269D58-B4E5-42E5-B3EE-A2CB69F449E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCCSharp.Presets", "OpenCCSharp.Presets\OpenCCSharp.Presets.csproj", "{509C2A16-D8D5-4480-BE5E-6FDE15138098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.Presets", "OpenCCSharp.Presets\OpenCCSharp.Presets.csproj", "{509C2A16-D8D5-4480-BE5E-6FDE15138098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCCSharp.Benchmarking", "OpenCCSharp.Benchmarking\OpenCCSharp.Benchmarking.csproj", "{45BCB097-6262-4E04-A87D-F6FCBB94CF6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.Benchmarking", "OpenCCSharp.Benchmarking\OpenCCSharp.Benchmarking.csproj", "{45BCB097-6262-4E04-A87D-F6FCBB94CF6C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3451AB9-88D9-4F87-935A-C6B9A9FCD503}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		OpenCCSharp.Commons\OpenCCSharp.Commons.props = OpenCCSharp.Commons\OpenCCSharp.Commons.props
+		OpenCCSharp.Commons\OpenCCSharp.Packages.props = OpenCCSharp.Commons\OpenCCSharp.Packages.props
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
