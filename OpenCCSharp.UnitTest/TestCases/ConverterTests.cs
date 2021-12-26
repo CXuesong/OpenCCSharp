@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using OpenCCSharp.Conversion;
+using OpenCCSharp.Presets;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -23,10 +24,10 @@ public class ConverterTests : UnitTestsBase
     [Fact]
     public async Task Test1()
     {
-        var s2t = await ConversionDefinitionUtils.CreateConverterFromAsync("Hans-Hant.json");
-        var t2s = await ConversionDefinitionUtils.CreateConverterFromAsync("Hant-Hans.json");
-        var s2twp = await ConversionDefinitionUtils.CreateConverterFromAsync("Hans-TW.json");
-        var tw2sp = await ConversionDefinitionUtils.CreateConverterFromAsync("TW-Hans.json");
+        var s2t = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hans, ChineseConversionVariant.Hant);
+        var t2s = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hant, ChineseConversionVariant.Hans);
+        var s2twp = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hans, ChineseConversionVariant.TW);
+        var tw2sp = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.TW, ChineseConversionVariant.Hans);
         AssertConversionPair(s2t, t2s, "调试", "調試");
         AssertConversionPair(s2twp, tw2sp, "调试", "除錯");
         AssertConversionPair(s2t, t2s, "查看中文繁简转换单元测试结果，以调试可能出现的代码逻辑错误。", "查看中文繁簡轉換單元測試結果，以調試可能出現的代碼邏輯錯誤。");
@@ -37,17 +38,17 @@ public class ConverterTests : UnitTestsBase
     /// Test cases ported from OpenCC C++ project.
     /// </summary>
     [Theory]
-    [InlineData("Hans-Hant.json", "s2t")]
-    [InlineData("Hans-HK.json", "s2hk")]
-    [InlineData("Hans-TW.json", "s2twp")]
-    [InlineData("Hant-Hani.json", "t2jp")]
-    [InlineData("Hant-Hans.json", "t2s")]
-    [InlineData("HK-Hans.json", "hk2s")]
-    [InlineData("TW-Hans.json", "tw2sp")]
-    [InlineData("Hani-Hant.json", "jp2t")]
-    public async Task OpenCCTest(string conversionDefinitionFileName, string caseSetName)
+    [InlineData(ChineseConversionVariant.Hans, ChineseConversionVariant.Hant, "s2t")]
+    [InlineData(ChineseConversionVariant.Hans, ChineseConversionVariant.HK, "s2hk")]
+    [InlineData(ChineseConversionVariant.Hans, ChineseConversionVariant.TW, "s2twp")]
+    [InlineData(ChineseConversionVariant.Hant, ChineseConversionVariant.Hani, "t2jp")]
+    [InlineData(ChineseConversionVariant.Hant, ChineseConversionVariant.Hans, "t2s")]
+    [InlineData(ChineseConversionVariant.HK, ChineseConversionVariant.Hans, "hk2s")]
+    [InlineData(ChineseConversionVariant.TW, ChineseConversionVariant.Hans, "tw2sp")]
+    [InlineData(ChineseConversionVariant.Hani, ChineseConversionVariant.Hant, "jp2t")]
+    public async Task OpenCCTest(ChineseConversionVariant from, ChineseConversionVariant to, string caseSetName)
     {
-        var converter = await ConversionDefinitionUtils.CreateConverterFromAsync(conversionDefinitionFileName);
+        var converter = await ChineseConversionPresets.GetConverterAsync(from, to);
         var caseIndex = 1;
         foreach (var (input, expected) in OpenCCUtils.ReadTestCases(caseSetName))
         {

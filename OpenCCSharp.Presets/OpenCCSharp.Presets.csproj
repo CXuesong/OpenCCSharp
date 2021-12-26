@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCCSharp.Conversion\OpenCCSharp.Conversion.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="$(ProjectDir)../vendor/OpenCC/data/dictionary/**/*" Link="vendor/OpenCC/dictionary/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ConversionDefinitions\*" />
+    <Content Include="ConversionDefinitions\*" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+</Project>

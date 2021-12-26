@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="O9d.Json.Formatting" Version="0.1.0" />
     <PackageReference Include="System.Linq.Async" Version="5.1.0" />
@@ -24,17 +25,16 @@
 
   <ItemGroup>
     <Content Include="$(ProjectDir)../vendor/OpenCC/data/config/**/*" Link="vendor/OpenCC/config/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="$(ProjectDir)../vendor/OpenCC/data/dictionary/**/*" Link="vendor/OpenCC/dictionary/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="$(ProjectDir)../vendor/OpenCC/test/testcases/*" Link="vendor/OpenCC/testcases/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ConversionDefinitions\*" />
-    <Content Include="ConversionDefinitions\*" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="..\OpenCCSharp.Conversion\OpenCCSharp.Conversion.csproj" />
+    <ProjectReference Include="..\OpenCCSharp.Presets\OpenCCSharp.Presets.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenCCSharp.Conversion\OpenCCSharp.Conversion.csproj" />
+    <Folder Include="Benchmarks\" />
   </ItemGroup>
 
 </Project>
