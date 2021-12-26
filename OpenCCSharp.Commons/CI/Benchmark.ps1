@@ -20,8 +20,9 @@ dotnet run --project ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj 
     -- --list tree
 
 Write-Host
+# Using * as filter may result in no match in Linux.
 dotnet run --project ./OpenCCSharp.Benchmarking/OpenCCSharp.Benchmarking.csproj `
     --no-build -c $Configuration `
-    -- --filter *
+    -- --filter OpenCCSharp.UnitTest*
 
 Exit $LASTEXITCODE

@@ -80,5 +80,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "OpenCCSharp.Benchmark-${{ matrix.os }}-${{ matrix.config }}"
-          path: ./OpenCCSharp.Benchmarking/bin/Release/*/BenchmarkDotNet.Artifacts
+          path: ./BenchmarkDotNet.Artifacts
 
