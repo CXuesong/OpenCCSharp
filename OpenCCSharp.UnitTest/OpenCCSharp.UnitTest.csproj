@@ -26,15 +26,12 @@
   <ItemGroup>
     <Content Include="$(ProjectDir)../vendor/OpenCC/data/config/**/*" Link="vendor/OpenCC/config/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="$(ProjectDir)../vendor/OpenCC/test/testcases/*" Link="vendor/OpenCC/testcases/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(ProjectDir)../vendor/OpenCC/test/benchmark/*" Link="vendor/OpenCC/benchmark/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OpenCCSharp.Conversion\OpenCCSharp.Conversion.csproj" />
     <ProjectReference Include="..\OpenCCSharp.Presets\OpenCCSharp.Presets.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Benchmarks\" />
   </ItemGroup>
 
 </Project>
