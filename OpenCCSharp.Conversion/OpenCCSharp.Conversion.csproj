@@ -3,6 +3,17 @@
   <Import Project="../OpenCCSharp.Commons/OpenCCSharp.Packages.props" />
 
   <PropertyGroup>
+    <AssemblyName>OpenCCSharp.Conversion</AssemblyName>
+    <PackageId>CXuesong.OpenCCSharp.Conversion</PackageId>
+    <Description>
+      This package contains the shared infrastructure for language variant conversion.
+      For Chinese variant conversion presets, reference `CXuesong.OpenCCSharp.Presets` package.
+
+      This library is in INT phase and its API is still subject to drastic changes.
+
+      OpenCCSharp is a .NET library for Chinese handwritten script conversion.
+      This project is inspired by OpenCC project, and used similar approach in word segmentation.
+    </Description>
     <TargetFrameworks>net6.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

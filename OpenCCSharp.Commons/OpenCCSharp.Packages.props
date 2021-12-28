@@ -3,8 +3,8 @@
 
   <PropertyGroup>
     <!-- Here are the default targets. Projects may override on this value with higher requirements. -->
-    <TargetFrameworks>net5.0</TargetFrameworks>
-    <Version>0.0.1</Version>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <Version>0.0.1-int.0</Version>
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <FileVersion>0.0.1.0</FileVersion>
     <Copyright>Copyright (C) CXuesong 2021</Copyright>
@@ -20,10 +20,18 @@
     <Authors>CXuesong</Authors>
     <Company />
     <NoWarn>$(NoWarn);1701;1702;1705;1573;1591;NU5105</NoWarn>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)/OpenCCSharp.snk</AssemblyOriginatorKeyFile>
     <PublishRepositoryUrl>True</PublishRepositoryUrl>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <EmbedUntrackedSources>True</EmbedUntrackedSources>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Deterministic>True</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OCCS_IS_CI_BUILD)' == 'True' ">
+    <!-- https://github.com/clairernovotny/DeterministicBuilds -->
+    <ContinuousIntegrationBuild>True</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
