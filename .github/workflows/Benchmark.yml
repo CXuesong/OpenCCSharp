@@ -1,4 +1,4 @@
-name: OpenCCSharp CI
+name: OpenCCSharp Benchmark
 on:
   push:
     branches:
@@ -13,17 +13,17 @@ on:
       - "*.md"
       - "*.txt"
   schedule:
-    - cron: "23 0 1 * *"
+    - cron: "17 0 1 * *"
 
 jobs:
-  build_and_test:
-    name: "Build & Test: ${{ matrix.os }} / ${{ matrix.config }}"
+  benchmark:
+    name: "Benchmark ${{ matrix.os }} / ${{ matrix.config }}"
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
       matrix:
         os: ["ubuntu-latest", "windows-latest"]
-        config: ["Debug", "Release"]
+        config: ["Release"]
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -40,20 +40,12 @@ jobs:
       - name: Build
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Build.ps1 -Configuration ${{ matrix.config }}"
-      - name: Upload build artifacts
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: "OpenCCSharp-build-${{ matrix.os }}-${{ matrix.config }}"
-          path: ./OpenCCSharp.*/bin/
-      - name: Upload NuGet packages
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: "OpenCCSharp-packages-${{ matrix.os }}-${{ matrix.config }}"
-          path: |
-            ./OpenCCSharp.*/bin/*/*.nupkg
-            ./OpenCCSharp.*/bin/*/*.snupkg
-      - name: Test
+      - name: Benchmark
         shell: pwsh
-        run: "./OpenCCSharp.Commons/CI/Test.ps1 -Configuration ${{ matrix.config }}"
+        run: "./OpenCCSharp.Commons/CI/Benchmark.ps1 -Configuration ${{ matrix.config }}"
+      - name: Upload benchmark result
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "OpenCCSharp.Benchmark-${{ matrix.os }}-${{ matrix.config }}"
+          path: ./BenchmarkDotNet.Artifacts
