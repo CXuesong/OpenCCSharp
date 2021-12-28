@@ -30,7 +30,11 @@ With Visual Studio 2022 or VSCode + .NET SDK 6.
 
 ## Benchmark
 
-This project is still in its very early phase and prefix matching is achieved by binary search in sorted array. Tries are yet to be adopted.
+Currently, this library is generally [8x slower](https://github.com/BYVoid/OpenCC#benchmark-%E5%9F%BA%E6%BA%96%E6%B8%AC%E8%A9%A6) than the OpenCC library implemented in native C++.
+
+This project is still in its very early phase and prefix matching is achieved by binary search in sorted array. Roughly speaking, the worst case time complexity is _O(L N_ log _|D|)_, where _L_ is the input string length, _N_ is the maximum key length among conversion dictionary entries, _|D|_ is the size of conversion dictionary.
+
+We may remove the factor _N_ for average cases after Tries gets adopted.
 
 ### Windows
 
