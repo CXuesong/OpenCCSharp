@@ -5,6 +5,7 @@ on:
       - main
     paths-ignore:
       - "*.md"
+      - "*.txt"
   pull_request:
     branches:
       - main
@@ -41,15 +42,22 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: "OpenCCSharp-${{ matrix.os }}-${{ matrix.config }}"
+          name: "OpenCCSharp-build-${{ matrix.os }}-${{ matrix.config }}"
           path: ./OpenCCSharp.*/bin/
+      - name: Upload NuGet packages
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "OpenCCSharp-packages-${{ matrix.os }}-${{ matrix.config }}"
+          path: |
+            ./OpenCCSharp.*/bin/*/*.nupkg
+            ./OpenCCSharp.*/bin/*/*.snupkg
       - name: Test
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Test.ps1 -Configuration ${{ matrix.config }}"
 
   benchmark:
     name: "Benchmark ${{ matrix.os }} / ${{ matrix.config }}"
-    needs: build_and_test
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
@@ -68,10 +76,9 @@ jobs:
           dotnet-version: |
             5.0.x
             6.0.x
-      - name: Download build artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: "OpenCCSharp-${{ matrix.os }}-${{ matrix.config }}"
+      - name: Build
+        shell: pwsh
+        run: "./OpenCCSharp.Commons/CI/Build.ps1 -Configuration ${{ matrix.config }}"
       - name: Benchmark
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Benchmark.ps1 -Configuration ${{ matrix.config }}"
@@ -81,4 +88,3 @@ jobs:
         with:
           name: "OpenCCSharp.Benchmark-${{ matrix.os }}-${{ matrix.config }}"
           path: ./BenchmarkDotNet.Artifacts
-
