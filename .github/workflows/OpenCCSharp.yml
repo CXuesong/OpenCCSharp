@@ -26,6 +26,7 @@ jobs:
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      OCCS_IS_CI_BUILD: true
     steps:
       - uses: actions/checkout@v2
         with:
