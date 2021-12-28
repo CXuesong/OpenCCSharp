@@ -30,14 +30,14 @@ namespace OpenCCSharp.UnitTest.Benchmarks
             dummy = null;
         }
 
-        public IEnumerable<BulkConversionTestArguments> GetBulkConversionTestArguments()
+        public static IEnumerable<BulkConversionTestArguments> GetBulkConversionTestArguments()
         {
             var s2t = ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hans, ChineseConversionVariant.Hant)
                 .AsTask().GetAwaiter().GetResult();
             var t2s = ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hant, ChineseConversionVariant.Hans)
                 .AsTask().GetAwaiter().GetResult();
 
-            string BuildRepeatedSequence(int iterations)
+            static string BuildRepeatedSequence(int iterations)
             {
                 // Length = 27
                 const string stem = "Open Chinese Convert 開放中文轉換";

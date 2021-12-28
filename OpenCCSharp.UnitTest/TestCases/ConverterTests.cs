@@ -17,7 +17,7 @@ public class ConverterTests : UnitTestsBase
     {
     }
 
-    private void AssertConversionPair(ScriptConverterBase forwardConverter, ScriptConverterBase? backwardConverter, string text1, string text2)
+    private static void AssertConversionPair(ScriptConverterBase forwardConverter, ScriptConverterBase? backwardConverter, string text1, string text2)
     {
         Assert.Equal(text2, forwardConverter.Convert(text1));
         if (backwardConverter != null)
