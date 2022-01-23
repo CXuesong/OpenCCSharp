@@ -55,6 +55,8 @@ public class TrieStringPrefixDictionary : IReadOnlyStringPrefixDictionary
         return false;
     }
 
+    public void TrimExcess() => trie.TrimExcess();
+
     #endregion
 
     /// <inheritdoc />

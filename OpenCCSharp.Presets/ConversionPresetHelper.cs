@@ -40,6 +40,7 @@ internal static class ConversionPresetHelper
                     dict.TryAdd(k, v[0]);
                 }
             }
+            dict.TrimExcess();
             dc[fn] = dict;
             return dict;
         }
