@@ -6,6 +6,57 @@ public class TrieStringPrefixDictionary : IReadOnlyStringPrefixDictionary
 {
     private readonly Trie<ReadOnlyMemory<char>> trie = new();
 
+    #region Mutation
+
+    public void Add(string key, string value)
+    {
+        trie.Add(key, value.AsMemory());
+    }
+
+    public void Add(string key, ReadOnlyMemory<char> value)
+    {
+        trie.Add(key, value);
+    }
+
+    // n.b. It's caller's responsibility to keep key immutable.
+    public void Add(ReadOnlyMemory<char> key, ReadOnlyMemory<char> value)
+    {
+        trie.Add(key, value);
+    }
+
+    public bool TryAdd(string key, string value)
+    {
+        if (!trie.ContainsKey(key))
+        {
+            trie.Add(key, value.AsMemory());
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryAdd(string key, ReadOnlyMemory<char> value)
+    {
+        if (!trie.ContainsKey(key))
+        {
+            trie.Add(key, value);
+            return true;
+        }
+        return false;
+    }
+
+    // n.b. It's caller's responsibility to keep key immutable.
+    public bool TryAdd(ReadOnlyMemory<char> key, ReadOnlyMemory<char> value)
+    {
+        if (!trie.ContainsKey(key))
+        {
+            trie.Add(key, value);
+            return true;
+        }
+        return false;
+    }
+
+    #endregion
+
     /// <inheritdoc />
     public IEnumerator<KeyValuePair<ReadOnlyMemory<char>, ReadOnlyMemory<char>>> GetEnumerator() => trie.GetEnumerator();
 

@@ -27,11 +27,19 @@ internal static class ConversionPresetHelper
             var dict = new SortedStringPrefixDictionary();
             var segments = fn.Split('|');
 
-            var loadOptions = PlainTextConversionLookupTableLoadOptions.None;
-            if (segments.Length > 1 && segments[1].Equals("Reverse", StringComparison.OrdinalIgnoreCase))
-                loadOptions |= PlainTextConversionLookupTableLoadOptions.ReverseEntries;
+            var reverse = segments.Length > 1 && segments[1].Equals("Reverse", StringComparison.OrdinalIgnoreCase);
 
-            await PlainTextConversionLookupTable.LoadAsync(dict, Path.Join(OpenCCDictionaryDir, segments[0]), loadOptions);
+            await foreach (var (k, v) in PlainTextConversionLookupTable.EnumEntriesFromAsync(Path.Join(OpenCCDictionaryDir, segments[0])))
+            {
+                if (reverse)
+                {
+                    foreach (var v1 in v) dict.TryAdd(v1, k);
+                }
+                else
+                {
+                    dict.TryAdd(k, v[0]);
+                }
+            }
             dc[fn] = dict;
             return dict;
         }
