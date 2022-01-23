@@ -19,12 +19,12 @@ internal static class ConversionPresetHelper
     // <string, Task<SortedStringPrefixDictionary> | SortedStringPrefixDictionary>
     private static readonly ConcurrentDictionary<string, object> dictCache = new();
 
-    public static ValueTask<SortedStringPrefixDictionary> GetDictionaryFromAsync(string dictFileName)
+    public static ValueTask<TrieStringPrefixDictionary> GetDictionaryFromAsync(string dictFileName)
     {
-        static async Task<SortedStringPrefixDictionary> ValueFactory(string fn, ConcurrentDictionary<string, object> dc)
+        static async Task<TrieStringPrefixDictionary> ValueFactory(string fn, ConcurrentDictionary<string, object> dc)
         {
             await Task.Yield();
-            var dict = new SortedStringPrefixDictionary();
+            var dict = new TrieStringPrefixDictionary();
             var segments = fn.Split('|');
 
             var reverse = segments.Length > 1 && segments[1].Equals("Reverse", StringComparison.OrdinalIgnoreCase);
@@ -46,8 +46,8 @@ internal static class ConversionPresetHelper
 
         return dictCache.GetOrAdd(dictFileName, static (fn, dc) => ValueFactory(fn, dc), dictCache) switch
         {
-            Task<SortedStringPrefixDictionary> t => new(t),
-            SortedStringPrefixDictionary d => new(d),
+            Task<TrieStringPrefixDictionary> t => new(t),
+            TrieStringPrefixDictionary d => new(d),
             _ => throw new InvalidOperationException(),
         };
     }
