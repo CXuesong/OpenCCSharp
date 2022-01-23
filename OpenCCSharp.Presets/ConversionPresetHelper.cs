@@ -33,11 +33,11 @@ internal static class ConversionPresetHelper
             {
                 if (reverse)
                 {
-                    foreach (var v1 in v) dict.TryAdd(v1, k);
+                    foreach (var v1 in v) dict.TryAdd(v1, k.ToArray());
                 }
                 else
                 {
-                    dict.TryAdd(k, v[0]);
+                    dict.TryAdd(k, v[0].ToArray());
                 }
             }
             dict.TrimExcess();
