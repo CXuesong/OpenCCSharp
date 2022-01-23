@@ -135,19 +135,17 @@ public class SortedStringPrefixDictionary : IReadOnlyStringPrefixDictionary
     }
 
     /// <inheritdoc />
-    public bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key)
+    public (int length, ReadOnlyMemory<char> value) TryGetLongestPrefixingKey(ReadOnlySpan<char> content)
     {
         for (var prefixLength = Math.Min(content.Length, this._maxKeyLength); prefixLength > 0; prefixLength--)
         {
             var index = BinarySearch(content[..prefixLength]);
             if (index >= 0)
             {
-                key = _myDict.Keys[index];
-                return true;
+                return (_myDict.Keys[index].Length, _myDict.Values[index]);
             }
         }
-        key = default;
-        return false;
+        return (-1, default);
     }
 
     /// <inheritdoc />

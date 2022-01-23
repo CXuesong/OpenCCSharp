@@ -17,10 +17,11 @@ public class LongestPrefixLexer : IScriptLexer
     public int GetNextSegmentLength(ReadOnlySpan<char> content)
     {
         if (content.IsEmpty) return 0;
-        if (_Mapping.TryGetLongestPrefixingKey(content, out var key))
-            return key.Length;
+        var (len, _) = _Mapping.TryGetLongestPrefixingKey(content);
+        if (len > 0)
+            return len;
         // Skip to next Unicode point (rune)
-        if (Rune.DecodeFromUtf16(content, out _, out var len) == OperationStatus.Done)
+        if (Rune.DecodeFromUtf16(content, out _, out len) == OperationStatus.Done)
             return len;
         return 1;
     }

@@ -59,19 +59,18 @@ public class MergedStringPrefixMapping : IStringPrefixMapping
     }
 
     /// <inheritdoc />
-    public bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key)
+    public (int length, ReadOnlyMemory<char> value) TryGetLongestPrefixingKey(ReadOnlySpan<char> content)
     {
-        key = default;
-        var anyMatch = false;
+        var longestKeyLength = -1;
+        var matchValue = ReadOnlyMemory<char>.Empty;
         foreach (var dict in _myDicts)
         {
-            if (dict.TryGetLongestPrefixingKey(content, out var key1) && (!anyMatch || key1.Length > key.Length))
-            {
-                anyMatch = true;
-                key = key1;
-            }
+            var (len, value) = dict.TryGetLongestPrefixingKey(content);
+            if (len <= longestKeyLength) continue;
+            longestKeyLength = len;
+            matchValue = value;
         }
-        return anyMatch;
+        return (longestKeyLength, matchValue);
     }
 
     /// <inheritdoc />

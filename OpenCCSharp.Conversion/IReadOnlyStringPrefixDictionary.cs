@@ -18,13 +18,13 @@ public interface IStringMapping
 public interface IStringPrefixMapping : IStringMapping
 {
 
-    bool TryGetLongestPrefixingKey(ReadOnlySpan<char> content, out ReadOnlyMemory<char> key);
+    (int length, ReadOnlyMemory<char> value) TryGetLongestPrefixingKey(ReadOnlySpan<char> content);
 
     IEnumerable<ReadOnlyMemory<char>> EnumPrefixingKeys(ReadOnlySpan<char> content);
 
 }
 
-public interface IReadOnlyStringPrefixDictionary : IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>, IStringMapping, IStringPrefixMapping
+public interface IReadOnlyStringPrefixDictionary : IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>, IStringPrefixMapping
 {
 
     ReadOnlyMemory<char> IReadOnlyDictionary<ReadOnlyMemory<char>, ReadOnlyMemory<char>>.this[ReadOnlyMemory<char> key] => this[key.Span];

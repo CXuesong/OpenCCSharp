@@ -64,4 +64,15 @@ public class ConverterTests : UnitTestsBase
         }
     }
 
+    [Fact]
+    public async Task OpenCCBenchmarkValidationTest()
+    {
+        // Sanity check on the benchmark logic.
+        var original = OpenCCUtils.LoadBenchmarkText();
+        var s2t = await ChineseConversionPresets.GetConverterAsync(ChineseConversionVariant.Hans, ChineseConversionVariant.Hant);
+        var converted = s2t.Convert(original);
+        Assert.StartsWith("左傳", converted);
+        Assert.Contains("元年春王正月。三月，公及邾儀父盟於蔑。", converted);
+    }
+
 }

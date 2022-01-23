@@ -19,4 +19,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CXuesong.TriesSharp" Version="0.0.1-int.0" />
+  </ItemGroup>
+
 </Project>

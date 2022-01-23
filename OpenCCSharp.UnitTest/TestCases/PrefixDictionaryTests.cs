@@ -37,8 +37,9 @@ namespace OpenCCSharp.UnitTest.TestCases
                 Assert.True(dict.TryGetValue(p.Key, out var v));
                 Assert.Equal(p.Value, v);
 
-                Assert.True(dict.TryGetLongestPrefixingKey(p.Key.Span, out var k));
-                Assert.Equal(p.Key, k);
+                var (len, value) = dict.TryGetLongestPrefixingKey(p.Key.Span);
+                Assert.Equal(p.Key.Length, len);
+                Assert.Equal(p.Value, value);
             });
         }
     }
