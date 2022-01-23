@@ -73,6 +73,11 @@ internal static class ConversionPresetHelper
         return new ChainedScriptConverter(converters);
     }
 
+    public static void ClearCache()
+    {
+        dictCache.Clear();
+    }
+
     private sealed class ConversionStep
     {
         public List<string> Dictionaries { get; set; } = default!;

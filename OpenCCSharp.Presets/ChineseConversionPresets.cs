@@ -52,6 +52,14 @@ public static class ChineseConversionPresets
         return converter;
     }
 
+    /// <summary>
+    /// Clears cached conversion dictionaries from runtime.
+    /// </summary>
+    public static void ClearConverterCache()
+    {
+        ConversionPresetHelper.ClearCache();
+    }
+
 }
 
 public enum ChineseConversionVariant
