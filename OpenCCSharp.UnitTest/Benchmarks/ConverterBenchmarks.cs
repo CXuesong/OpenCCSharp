@@ -14,22 +14,14 @@ namespace OpenCCSharp.UnitTest.Benchmarks
     public class ConverterBenchmarks
     {
 
-        private volatile string? dummy;
-
         [Benchmark]
         [ArgumentsSource(nameof(EnumOpenCCTestArguments))]
         public void OpenCCTest(OpenCCTestArguments arguments)
         {
             foreach (var input in arguments.TestCases)
             {
-                dummy = arguments.Converter.Convert(input);
+                arguments.Converter.Convert(input);
             }
-        }
-
-        [IterationCleanup]
-        public void Cleanup()
-        {
-            dummy = null;
         }
 
         public IEnumerable<OpenCCTestArguments> EnumOpenCCTestArguments()

@@ -15,19 +15,11 @@ namespace OpenCCSharp.UnitTest.Benchmarks
     public class ConverterBulkBenchmarks
     {
 
-        private volatile string? dummy;
-
         [Benchmark]
         [ArgumentsSource(nameof(GetBulkConversionTestArguments))]
         public void BulkConversionTest(BulkConversionTestArguments arguments)
         {
-            dummy = arguments.Converter.Convert(arguments.Text);
-        }
-
-        [IterationCleanup]
-        public void Cleanup()
-        {
-            dummy = null;
+            arguments.Converter.Convert(arguments.Text);
         }
 
         public static IEnumerable<BulkConversionTestArguments> GetBulkConversionTestArguments()

@@ -19,11 +19,9 @@ public class ConverterPresetBenchmarks
     public async ValueTask PresetLoadTest(ChineseConversionVariant fromVariant, ChineseConversionVariant toVariant)
     {
         await ChineseConversionPresets.GetConverterAsync(fromVariant, toVariant);
-    }
-
-    [IterationCleanup]
-    public void Cleanup()
-    {
+        // Unfortunately, just using the [IterationSetup] attribute is not enough to get stable results.
+        // You also need to make sure that the benchmark itself performs enough of computations for a single invocation to run longer than 100ms.
+        // If you don't, your benchmark will be entirely invalid.
         ChineseConversionPresets.ClearConverterCache();
     }
 
