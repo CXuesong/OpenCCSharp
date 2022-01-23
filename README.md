@@ -30,72 +30,101 @@ With Visual Studio 2022 or VSCode + .NET SDK 6.
 
 ## Benchmark
 
-Currently, this library is generally [8x slower](https://github.com/BYVoid/OpenCC#benchmark-%E5%9F%BA%E6%BA%96%E6%B8%AC%E8%A9%A6) than the OpenCC library implemented in native C++, when the input strings are long enough. The situation may get better after
+Currently, this library looks generally [2x faster](https://github.com/BYVoid/OpenCC#benchmark-%E5%9F%BA%E6%BA%96%E6%B8%AC%E8%A9%A6) than the OpenCC library implemented in native C++.
 
-* unnecessary memory allocations getting prevented;
+### Test cases
 
-* tries getting adopted.
+* OpenCCTest: Measuring the time and memory footprint when executing original OpenCC tests (`BM_Initialization/*`), excl. loading preset conversion rules. 
+* BulkConversionTest: Measuring the time and memory footprint when executing original OpenCC tests (`BM_Convert*`), excl. loading preset conversion rules. 
+* PresetLoadTest: Measuring the time and memory footprint when loading the preset conversion rules with `ChineseConversionPresets.GetConverterAsync`.
+
+### Legends
+
+```
+  Mean        : Arithmetic mean of all measurements
+  Error       : Half of 99.9% confidence interval
+  StdDev      : Standard deviation of all measurements
+  Gen 0       : GC Generation 0 collects per 1000 operations
+  Gen 1       : GC Generation 1 collects per 1000 operations
+  Gen 2       : GC Generation 2 collects per 1000 operations
+  Allocated   : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  1 ms        : 1 Millisecond (0.001 sec)
+```
 
 ### Windows
 
 ``` ini
-
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2366 (1809/October2018Update/Redstone5)
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.17763.2452 (1809/October2018Update/Redstone5)
 Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=6.0.101
   [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-  Job-SNBGJP : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-
-InvocationCount=1  UnrollFactor=1  
-
+  DefaultJob : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
 ```
-| Method     | arguments              |        Mean |     Error |    StdDev |      Median |
-| ---------- | ---------------------- | ----------: | --------: | --------: | ----------: |
-| OpenCCTest | HK -&gt; Hans [hk2s]   |   111.24 μs |  1.245 μs |  1.104 μs |   111.00 μs |
-| OpenCCTest | Hani -&gt; Hant [jp2t] |   112.53 μs |  2.233 μs |  3.911 μs |   112.90 μs |
-| OpenCCTest | Hans -&gt; HK [s2hk]   |   107.94 μs |  1.937 μs |  1.717 μs |   107.70 μs |
-| OpenCCTest | Hans -&gt; Hant [s2t]  | 1,840.44 μs | 35.573 μs | 43.687 μs | 1,813.05 μs |
-| OpenCCTest | Hans -&gt; TW [s2twp]  |   827.50 μs |  2.197 μs |  1.835 μs |   827.60 μs |
-| OpenCCTest | Hant -&gt; Hani [t2jp] |    40.51 μs |  0.586 μs |  0.520 μs |    40.50 μs |
-| OpenCCTest | Hant -&gt; Hans [t2s]  |   613.11 μs |  5.188 μs |  4.599 μs |   614.50 μs |
-| OpenCCTest | TW -&gt; Hans [tw2sp]  |   877.91 μs | 17.471 μs | 27.200 μs |   862.25 μs |
+| Method         | arguments                  |           Mean |         Error |        StdDev |      Gen 0 |   Allocated |
+| -------------- | -------------------------- | -------------: | ------------: | ------------: | ---------: | ----------: |
+| **OpenCCTest** | **HK -&gt; Hans [hk2s]**   |   **9.307 μs** | **0.0993 μs** | **0.0880 μs** | **0.0305** |   **832 B** |
+| **OpenCCTest** | **Hani -&gt; Hant [jp2t]** |  **14.629 μs** | **0.1833 μs** | **0.1714 μs** | **0.0305** |   **680 B** |
+| **OpenCCTest** | **Hans -&gt; HK [s2hk]**   |   **9.792 μs** | **0.1168 μs** | **0.0975 μs** | **0.0458** | **1,112 B** |
+| **OpenCCTest** | **Hans -&gt; Hant [s2t]**  | **101.216 μs** | **0.9262 μs** | **0.8663 μs** |      **-** | **1,776 B** |
+| **OpenCCTest** | **Hans -&gt; TW [s2twp]**  |  **62.318 μs** | **1.2070 μs** | **1.1290 μs** |      **-** | **1,208 B** |
+| **OpenCCTest** | **Hant -&gt; Hani [t2jp]** |   **7.321 μs** | **0.0641 μs** | **0.0599 μs** | **0.0305** |   **672 B** |
+| **OpenCCTest** | **Hant -&gt; Hans [t2s]**  |  **32.833 μs** | **0.3501 μs** | **0.3275 μs** |      **-** |   **360 B** |
+| **OpenCCTest** | **TW -&gt; Hans [tw2sp]**  |  **82.299 μs** | **0.6781 μs** | **0.6343 μs** |      **-** | **1,512 B** |
 
-| Method             | arguments                                          |         Mean |     Error |    StdDev |
-| ------------------ | -------------------------------------------------- | -----------: | --------: | --------: |
-| BulkConversionTest | DupSequence 100 Hant -&gt; Hans (2700 chars)       |     12.64 ms |  0.034 ms |  0.029 ms |
-| BulkConversionTest | DupSequence 1000 Hant -&gt; Hans (27000 chars)     |    131.39 ms |  1.664 ms |  1.557 ms |
-| BulkConversionTest | DupSequence 10000 Hant -&gt; Hans (270000 chars)   |  1,282.75 ms |  7.610 ms |  7.118 ms |
-| BulkConversionTest | DupSequence 100000 Hant -&gt; Hans (2700000 chars) | 13,017.96 ms |  9.047 ms |  8.020 ms |
-| BulkConversionTest | Zuozhuan Hans -&gt; Hant (629833 chars)            |  6,226.50 ms | 11.960 ms | 11.187 ms |
+| Method                 | arguments                                              |             Mean |           Error |          StdDev |    Allocated |
+| ---------------------- | ------------------------------------------------------ | ---------------: | --------------: | --------------: | -----------: |
+| **BulkConversionTest** | **DupSequence 100 Hant -&gt; Hans (2700 chars)**       |     **540.7 μs** |     **6.25 μs** |     **5.84 μs** |     **5 KB** |
+| **BulkConversionTest** | **DupSequence 1000 Hant -&gt; Hans (27000 chars)**     |   **5,442.9 μs** |    **39.22 μs** |    **34.77 μs** |    **53 KB** |
+| **BulkConversionTest** | **DupSequence 10000 Hant -&gt; Hans (270000 chars)**   |  **55,595.3 μs** | **1,060.95 μs** | **1,041.99 μs** |   **528 KB** |
+| **BulkConversionTest** | **DupSequence 100000 Hant -&gt; Hans (2700000 chars)** | **557,006.0 μs** | **8,258.62 μs** | **7,725.12 μs** | **5,277 KB** |
+| **BulkConversionTest** | **Zuozhuan Hans -&gt; Hant (629833 chars)**            | **295,094.7 μs** | **5,475.38 μs** | **5,121.68 μs** | **1,231 KB** |
+
+| Method             | fromVariant | toVariant |          Mean |         Error |        StdDev |        Gen 0 |        Gen 1 |        Gen 2 |     Allocated |
+| ------------------ | ----------- | --------- | ------------: | ------------: | ------------: | -----------: | -----------: | -----------: | ------------: |
+| **PresetLoadTest** | **Hans**    | **Hant**  | **69.522 ms** | **0.8456 ms** | **0.7061 ms** | **875.0000** | **500.0000** | **125.0000** | **14,699 KB** |
+| **PresetLoadTest** | **Hans**    | **Hani**  | **69.549 ms** | **0.6370 ms** | **0.5958 ms** | **875.0000** | **500.0000** | **125.0000** | **14,755 KB** |
+| **PresetLoadTest** | **Hans**    | **HK**    | **71.000 ms** | **1.4150 ms** | **1.4531 ms** | **875.0000** | **500.0000** | **125.0000** | **14,718 KB** |
+| **PresetLoadTest** | **Hans**    | **TW**    | **72.064 ms** | **1.1314 ms** | **1.0583 ms** | **857.1429** | **428.5714** | **142.8571** | **14,953 KB** |
+| **PresetLoadTest** | **Hant**    | **Hans**  |  **3.884 ms** | **0.0451 ms** | **0.0400 ms** |  **27.3438** |  **11.7188** |   **3.9063** |    **566 KB** |
+| **PresetLoadTest** | **Hant**    | **Hani**  |  **1.576 ms** | **0.0235 ms** | **0.0196 ms** |   **3.9063** |   **1.9531** |        **-** |     **87 KB** |
+| **PresetLoadTest** | **HK**      | **Hans**  |  **4.276 ms** | **0.0771 ms** | **0.0791 ms** |  **31.2500** |   **7.8125** |        **-** |    **652 KB** |
+| **PresetLoadTest** | **TW**      | **Hans**  |  **5.231 ms** | **0.0498 ms** | **0.0465 ms** |  **46.8750** |  **15.6250** |   **7.8125** |    **891 KB** |
 
 ### Linux (Ubuntu)
 
 ``` ini
-
 BenchmarkDotNet=v0.13.1, OS=ubuntu 20.04
-Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
+Intel Xeon CPU E5-2673 v4 2.30GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=6.0.101
   [Host]     : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-  Job-IGSTAA : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
-
-InvocationCount=1  UnrollFactor=1  
-
+  DefaultJob : .NET 6.0.1 (6.0.121.56705), X64 RyuJIT
 ```
-| Method     | arguments              |        Mean |    Error |    StdDev |
-| ---------- | ---------------------- | ----------: | -------: | --------: |
-| OpenCCTest | HK -&gt; Hans [hk2s]   |    87.01 μs | 1.666 μs |  1.782 μs |
-| OpenCCTest | Hani -&gt; Hant [jp2t] |    92.09 μs | 1.209 μs |  1.072 μs |
-| OpenCCTest | Hans -&gt; HK [s2hk]   |   104.87 μs | 1.814 μs |  1.697 μs |
-| OpenCCTest | Hans -&gt; Hant [s2t]  | 1,229.39 μs | 7.528 μs | 13.380 μs |
-| OpenCCTest | Hans -&gt; TW [s2twp]  |   548.76 μs | 4.093 μs |  7.586 μs |
-| OpenCCTest | Hant -&gt; Hani [t2jp] |    40.45 μs | 0.768 μs |  0.718 μs |
-| OpenCCTest | Hant -&gt; Hans [t2s]  |   501.85 μs | 6.451 μs |  5.387 μs |
-| OpenCCTest | TW -&gt; Hans [tw2sp]  |   591.57 μs | 8.091 μs | 15.393 μs |
+| Method         | arguments               |          Mean |         Error |        StdDev |      Gen 0 |   Allocated |
+| -------------- | ----------------------- | ------------: | ------------: | ------------: | ---------: | ----------: |
+| **OpenCCTest** | **HK -> Hans [hk2s]**   |  **8.163 μs** | **0.1603 μs** | **0.2807 μs** | **0.0305** |   **832 B** |
+| **OpenCCTest** | **Hani -> Hant [jp2t]** | **12.021 μs** | **0.2151 μs** | **0.1907 μs** | **0.0153** |   **680 B** |
+| **OpenCCTest** | **Hans -> HK [s2hk]**   |  **7.959 μs** | **0.1292 μs** | **0.1145 μs** | **0.0305** | **1,112 B** |
+| **OpenCCTest** | **Hans -> Hant [s2t]**  | **78.375 μs** | **1.5562 μs** | **2.7661 μs** |      **-** | **1,776 B** |
+| **OpenCCTest** | **Hans -> TW [s2twp]**  | **49.265 μs** | **0.9629 μs** | **1.1826 μs** |      **-** | **1,208 B** |
+| **OpenCCTest** | **Hant -> Hani [t2jp]** |  **5.848 μs** | **0.0869 μs** | **0.0813 μs** | **0.0229** |   **672 B** |
+| **OpenCCTest** | **Hant -> Hans [t2s]**  | **25.582 μs** | **0.4244 μs** | **0.3970 μs** |      **-** |   **360 B** |
+| **OpenCCTest** | **TW -> Hans [tw2sp]**  | **65.888 μs** | **1.2371 μs** | **1.7342 μs** |      **-** | **1,512 B** |
 
-| Method             | arguments                                          |         Mean |     Error |    StdDev |
-| ------------------ | -------------------------------------------------- | -----------: | --------: | --------: |
-| BulkConversionTest | DupSequence 100 Hant -&gt; Hans (2700 chars)       |     8.622 ms | 0.0709 ms | 0.0788 ms |
-| BulkConversionTest | DupSequence 1000 Hant -&gt; Hans (27000 chars)     |    86.948 ms | 0.2389 ms | 0.2235 ms |
-| BulkConversionTest | DupSequence 10000 Hant -&gt; Hans (270000 chars)   |   850.413 ms | 0.3474 ms | 0.2901 ms |
-| BulkConversionTest | DupSequence 100000 Hant -&gt; Hans (2700000 chars) | 8,500.346 ms | 7.3097 ms | 6.8375 ms |
-| BulkConversionTest | Zuozhuan Hans -&gt; Hant (629833 chars)            | 4,208.511 ms | 6.0026 ms | 5.6148 ms |
+| Method                 | arguments                                           |             Mean |           Error |           StdDev |    Allocated |
+| ---------------------- | --------------------------------------------------- | ---------------: | --------------: | ---------------: | -----------: |
+| **BulkConversionTest** | **DupSequence 100 Hant -> Hans (2700 chars)**       |     **442.1 μs** |     **8.19 μs** |      **7.66 μs** |     **5 KB** |
+| **BulkConversionTest** | **DupSequence 1000 Hant -> Hans (27000 chars)**     |   **4,338.8 μs** |    **84.25 μs** |    **136.04 μs** |    **53 KB** |
+| **BulkConversionTest** | **DupSequence 10000 Hant -> Hans (270000 chars)**   |  **41,423.6 μs** |   **555.38 μs** |    **492.33 μs** |   **528 KB** |
+| **BulkConversionTest** | **DupSequence 100000 Hant -> Hans (2700000 chars)** | **439,468.6 μs** | **8,666.34 μs** | **10,316.66 μs** | **5,275 KB** |
+| **BulkConversionTest** | **Zuozhuan Hans -> Hant (629833 chars)**            | **241,657.4 μs** | **4,802.48 μs** |  **5,337.94 μs** | **1,231 KB** |
+
+| Method             | fromVariant | toVariant |          Mean |         Error |        StdDev |        Gen 0 |        Gen 1 |        Gen 2 |     Allocated |
+| ------------------ | ----------- | --------- | ------------: | ------------: | ------------: | -----------: | -----------: | -----------: | ------------: |
+| **PresetLoadTest** | **Hans**    | **Hant**  | **55.125 ms** | **1.0912 ms** | **1.9112 ms** | **666.6667** | **333.3333** | **111.1111** | **14,697 KB** |
+| **PresetLoadTest** | **Hans**    | **Hani**  | **55.438 ms** | **0.9631 ms** | **0.8043 ms** | **625.0000** | **375.0000** | **125.0000** | **14,752 KB** |
+| **PresetLoadTest** | **Hans**    | **HK**    | **55.132 ms** | **1.0585 ms** | **1.8538 ms** | **625.0000** | **375.0000** | **125.0000** | **14,717 KB** |
+| **PresetLoadTest** | **Hans**    | **TW**    | **55.516 ms** | **1.0844 ms** | **1.6559 ms** | **666.6667** | **333.3333** | **111.1111** | **14,954 KB** |
+| **PresetLoadTest** | **Hant**    | **Hans**  |  **3.531 ms** | **0.0695 ms** | **0.0800 ms** |  **19.5313** |   **7.8125** |        **-** |    **567 KB** |
+| **PresetLoadTest** | **Hant**    | **Hani**  |  **1.543 ms** | **0.0282 ms** | **0.0264 ms** |   **1.9531** |        **-** |        **-** |     **88 KB** |
+| **PresetLoadTest** | **HK**      | **Hans**  |  **3.871 ms** | **0.0593 ms** | **0.0526 ms** |  **23.4375** |   **7.8125** |        **-** |    **654 KB** |
+| **PresetLoadTest** | **TW**      | **Hans**  |  **4.440 ms** | **0.0678 ms** | **0.0601 ms** |  **31.2500** |   **7.8125** |        **-** |    **895 KB** |
