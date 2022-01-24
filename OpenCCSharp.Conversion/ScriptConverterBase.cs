@@ -24,16 +24,15 @@ public abstract class ScriptConverterBase
         sourceConsumed = 0;
         destConsumed = 0;
         var successful = false;
-        // nextDestBufferInflationRatioReciprocal
-        var bufferInflationDivisor = 16;
+        const int MAX_ALLOWED_INFLATION_RATIO = 16;
+        const int MAX_ALLOWED_INDETERMINISTIC_BUFFER_SIZE = 16*1024*1024;
         try
         {
             do
             {
-                // Assumes the length of converted content is the length of input + inflation ratio.
-                const int minBufferSize = 16;
-                var maxBufferSize = maxDestLength > 0 ? (maxDestLength - destConsumed) : (128 * 1024 * 1024);
-                var bufferSize = Math.Clamp(rest.Length + rest.Length / bufferInflationDivisor, minBufferSize, maxBufferSize);
+                var maxBufferSize = maxDestLength > 0 ? (maxDestLength - destConsumed) : MAX_ALLOWED_INDETERMINISTIC_BUFFER_SIZE;
+                var bufferSize = Math.Min(rest.Length, maxBufferSize);
+                BUFFER_EXPAND_RETRY:
                 var buffer = ArrayPool<char>.Shared.Rent(bufferSize);
                 var bufferSpan = buffer.Length > maxBufferSize ? buffer.AsSpan(0, maxBufferSize) : buffer.AsSpan();
                 Convert(rest, bufferSpan, out var sourceConsumedLocal, out var destConsumedLocal, out var completed);
@@ -43,11 +42,11 @@ public abstract class ScriptConverterBase
                     Debug.Assert(!completed);
                     ArrayPool<char>.Shared.Return(buffer);
                     // The buffer is too small to write only one word.
-                    if (bufferSize < maxBufferSize && bufferInflationDivisor > 1)
+                    if (bufferSize < maxBufferSize && bufferSpan.Length / rest.Length < MAX_ALLOWED_INFLATION_RATIO)
                     {
                         // Try to enlarge buffer during next iteration. Hopefully we'll make progress.
-                        bufferInflationDivisor /= 2;
-                        continue;
+                        bufferSize = Math.Min(bufferSize * 2, maxBufferSize);
+                        goto BUFFER_EXPAND_RETRY;
                     }
                     else
                     {
