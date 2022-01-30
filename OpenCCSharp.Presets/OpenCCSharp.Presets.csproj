@@ -24,12 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="$(ProjectDir)../vendor/OpenCC/data/dictionary/**/*" Link="vendor/OpenCC/dictionary/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Always" />
+    <EmbeddedResource Include="$(ProjectDir)../vendor/OpenCC/data/dictionary/**/*" Link="ConversionDictionaries/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ConversionDefinitions\*" />
-    <Content Include="ConversionDefinitions\*" CopyToOutputDirectory="Always" />
+    <EmbeddedResource Include="ConversionDefinitions\*" />
   </ItemGroup>
 
 </Project>

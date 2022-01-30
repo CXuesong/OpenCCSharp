@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -12,9 +13,9 @@ namespace OpenCCSharp.Presets;
 internal static class ConversionPresetHelper
 {
 
-    private static readonly string OpenCCDictionaryDir = Path.Join(typeof(ChineseConversionPresets).Assembly.Location, "../vendor/OpenCC/dictionary");
+    private static readonly string OpenCCDictionariesNamespacePrefix = typeof(ConversionPresetHelper).Namespace + ".ConversionDictionaries.";
 
-    private static readonly string ConversionDefinitionsDir = Path.Join(typeof(ChineseConversionPresets).Assembly.Location, "../ConversionDefinitions");
+    private static readonly string ConversionDefinitionsNamespacePrefix = typeof(ConversionPresetHelper).Namespace + ".ConversionDefinitions.";
 
     // <string, Task<SortedStringPrefixDictionary> | SortedStringPrefixDictionary>
     private static readonly ConcurrentDictionary<string, object> dictCache = new();
@@ -29,17 +30,25 @@ internal static class ConversionPresetHelper
 
             var reverse = segments.Length > 1 && segments[1].Equals("Reverse", StringComparison.OrdinalIgnoreCase);
 
-            await foreach (var (k, v) in PlainTextConversionLookupTable.EnumEntriesFromAsync(Path.Join(OpenCCDictionaryDir, segments[0])))
+            var resourceName = OpenCCDictionariesNamespacePrefix + segments[0];
+            await using (var rs = typeof(ConversionPresetHelper).Assembly.GetManifestResourceStream(resourceName))
             {
-                if (reverse)
+                if (rs == null)
+                    throw new MissingManifestResourceException($"Failed to retrieve the manifest resource: {resourceName}.");
+
+                await foreach (var (k, v) in PlainTextConversionLookupTable.EnumEntriesFromAsync(rs))
                 {
-                    foreach (var v1 in v) dict.TryAdd(v1, k.ToArray());
-                }
-                else
-                {
-                    dict.TryAdd(k, v[0].ToArray());
+                    if (reverse)
+                    {
+                        foreach (var v1 in v) dict.TryAdd(v1, k.ToArray());
+                    }
+                    else
+                    {
+                        dict.TryAdd(k, v[0].ToArray());
+                    }
                 }
             }
+
             dict.TrimExcess();
             dc[fn] = dict;
             return dict;
@@ -56,12 +65,17 @@ internal static class ConversionPresetHelper
     public static async ValueTask<ChainedScriptConverter> CreateConverterFromAsync(string configFileName)
     {
         ConversionDefinitionRoot config;
-        await using (var fs = File.OpenRead(Path.Join(ConversionDefinitionsDir, configFileName)))
-            config = JsonSerializer.Deserialize<ConversionDefinitionRoot>(fs, new JsonSerializerOptions
+        var resourceName = ConversionDefinitionsNamespacePrefix + configFileName;
+        await using (var rs = typeof(ConversionPresetHelper).Assembly.GetManifestResourceStream(resourceName))
+        {
+            if (rs == null)
+                throw new MissingManifestResourceException($"Failed to retrieve the manifest resource: {resourceName}.");
+            config = JsonSerializer.Deserialize<ConversionDefinitionRoot>(rs, new JsonSerializerOptions
                      {
                          ReadCommentHandling = JsonCommentHandling.Skip,
                      })
                      ?? throw new InvalidOperationException("Config JSON resolves to null.");
+        }
         var converters = await config.ConversionSteps.SelectAsync(async step =>
         {
             var dicts = await step.Dictionaries
