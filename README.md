@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/CXuesong/OpenCCSharp/actions/workflows/OpenCCSharp.yml/badge.svg?branch=main)](https://github.com/CXuesong/OpenCCSharp/actions/workflows/OpenCCSharp.yml) | [![Build Status](https://github.com/CXuesong/OpenCCSharp/actions/workflows/Benchmark.yml/badge.svg?branch=main)](https://github.com/CXuesong/OpenCCSharp/actions/workflows/Benchmark.yml) 
 
-OpenCCSharp is a (WIP) .NET 6 library for Chinese handwritten script conversion. This project is inspired by [BYVoid/OpenCC](https://github.com/BYVoid/OpenCC), and used similar approach in word segmentation. This project also used the same conversion dictionary in OpenCC project.
+OpenCCSharp is a (WIP) .NET 6 library for Chinese text script variant conversion. This project is inspired by [BYVoid/OpenCC](https://github.com/BYVoid/OpenCC), and used similar approach in word segmentation. This project also used the same conversion dictionary in OpenCC project.
 
 >  This library is in its very early INT phase and its API is still subject to drastic changes. There is also much optimizations yet to be employed.
 
@@ -16,6 +16,8 @@ dotnet add package CXuesong.OpenCCSharp.Presets --prerelease
 ```
 
 For now there is no detailed usage documented here, but you can getting started by playing with `OpenCCSharp.Presets.ChineseConversionPresets`.
+
+This project also powers [OpenCC# WebApp](https://github.com/CXuesong/OpenCCSharp.WebApp), a serverless Chinese variant conversion web app, with the help of WASM.
 
 ## Packages
 
