@@ -1,10 +1,10 @@
 {
   "From": "zh-Hant",
-  "To": "ja-Hani",
+  "To": "zh-Hant-HK",
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "JPVariants.txt"
+        "HKVariants.txt"
       ]
     }
   ] 

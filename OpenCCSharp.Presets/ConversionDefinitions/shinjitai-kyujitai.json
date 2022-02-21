@@ -1,6 +1,6 @@
 {
-  "From": "ja-Hani",
-  "To": "zh-Hant",
+  "From": "ja-Hani-shinjitai",
+  "To": "ja-Hani-kyujitai",
   "ConversionSteps": [
     {
       "Dictionaries": [
@@ -9,5 +9,5 @@
         "JPVariants.txt|Reverse"
       ]
     }
-  ] 
+  ]
 }

@@ -10,6 +10,28 @@ namespace OpenCCSharp.Presets;
 /// </summary>
 public static class ChineseConversionPresets
 {
+    private static string? GetConversionDefinitionFileName(ChineseConversionVariant fromVariant, ChineseConversionVariant toVariant)
+        => (fromVariant, toVariant) switch
+        {
+            (ChineseConversionVariant.Hans, ChineseConversionVariant.Hant) => "Hans-Hant.json",
+            (ChineseConversionVariant.Hans, ChineseConversionVariant.HK) => "Hans-HK.json",
+            (ChineseConversionVariant.Hans, ChineseConversionVariant.TW) => "Hans-TW.json",
+            (ChineseConversionVariant.Hant, ChineseConversionVariant.Hans) => "Hant-Hans.json",
+            (ChineseConversionVariant.Hant, ChineseConversionVariant.HK) => "Hant-HK.json",
+            (ChineseConversionVariant.Hant, ChineseConversionVariant.TW) => "Hant-TW.json",
+            (ChineseConversionVariant.HK, ChineseConversionVariant.Hans) => "HK-Hans.json",
+            (ChineseConversionVariant.TW, ChineseConversionVariant.Hans) => "TW-Hans.json",
+            (ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjiatai) => "kyujitai-shinjitai.json",
+            (ChineseConversionVariant.Shinjiatai, ChineseConversionVariant.Kyujitai) => "shinjitai-kyujitai.json",
+            _ => null
+        };
+
+    /// <summary>
+    /// Determines whether the specified conversion pair is supported in the preset.
+    /// </summary>
+    public static bool IsConversionSupported(ChineseConversionVariant fromVariant, ChineseConversionVariant toVariant)
+        => GetConversionDefinitionFileName(fromVariant, toVariant) != null;
+
     /// <summary>
     /// Gets a <see cref="ScriptConverterBase"/> instance to convert the Chinese text from the specific variant.
     /// </summary>
@@ -24,30 +46,20 @@ public static class ChineseConversionPresets
     /// Currently, only the following <paramref name="fromVariant"/>-<paramref name="toVariant"/> conversion pairs are supported:
     /// <list type="bullet">
     /// <item><term>Hans-Hant</term></item>
-    /// <item><term>Hans-Hani</term></item>
     /// <item><term>Hans-HK</term></item>
     /// <item><term>Hans-TW</term></item>
-    /// <item><term>Hant-Hans</term></item>
-    /// <item><term>Hant-Hani</term></item>
     /// <item><term>HK-Hans</term></item>
     /// <item><term>TW-Hans</term></item>
+    /// <item><term>Kyujitai-Shinjiatai</term></item>
+    /// <item><term>Shinjiatai-Kyujitai</term></item>
     /// </list>
+    /// <para>Use <see cref="IsConversionSupported"/> to determine whether a conversion pair is supported.</para>
     /// </remarks>
     public static async ValueTask<ScriptConverterBase> GetConverterAsync(ChineseConversionVariant fromVariant, ChineseConversionVariant toVariant)
     {
-        var configFileName = (fromVariant, toVariant) switch
-        {
-            (ChineseConversionVariant.Hans, ChineseConversionVariant.Hant) => "Hans-Hant.json",
-            (ChineseConversionVariant.Hans, ChineseConversionVariant.Hani) => "Hans-Hani.json",
-            (ChineseConversionVariant.Hans, ChineseConversionVariant.HK) => "Hans-HK.json",
-            (ChineseConversionVariant.Hans, ChineseConversionVariant.TW) => "Hans-TW.json",
-            (ChineseConversionVariant.Hant, ChineseConversionVariant.Hans) => "Hant-Hans.json",
-            (ChineseConversionVariant.Hant, ChineseConversionVariant.Hani) => "Hant-Hani.json",
-            (ChineseConversionVariant.Hani, ChineseConversionVariant.Hant) => "Hani-Hant.json",
-            (ChineseConversionVariant.HK, ChineseConversionVariant.Hans) => "HK-Hans.json",
-            (ChineseConversionVariant.TW, ChineseConversionVariant.Hans) => "TW-Hans.json",
-            _ => throw new ArgumentException($"Invalid conversion pair: {fromVariant} -> {toVariant}."),
-        };
+        var configFileName = GetConversionDefinitionFileName(fromVariant, toVariant);
+        if (configFileName == null)
+            throw new ArgumentException($"Unsupported conversion pair: {fromVariant} -> {toVariant}.");
         var converter = await ConversionPresetHelper.CreateConverterFromAsync(configFileName);
         return converter;
     }
@@ -59,7 +71,6 @@ public static class ChineseConversionPresets
     {
         ConversionPresetHelper.ClearCache();
     }
-
 }
 
 public enum ChineseConversionVariant
@@ -70,8 +81,10 @@ public enum ChineseConversionVariant
     Hans,
     /// <summary>(OpenCC standard) Traditional Chinese.（繁體中文）</summary>
     Hant,
+    /// <summary>Japanese Kanji (Kyujitai).【旧字体（きゅうじたい）】</summary>
+    Kyujitai,
     /// <summary>Japanese Kanji (Shinjitai).【新字体（しんじたい）】</summary>
-    Hani,
+    Shinjiatai,
     /// <summary>Traditional Chinese, with character/phrase variants in Hongkong.（香港繁體）</summary>
     HK,
     /// <summary>Traditional Chinese, with character/phrase variants in Taiwan.（台灣正體）</summary>

@@ -1,0 +1,14 @@
+{
+  "From": "zh-Hant",
+  "To": "zh-Hant-TW",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "TWVariants.txt",
+        "TWPhrasesIT.txt",
+        "TWPhrasesName.txt",
+        "TWPhrasesOther.txt"
+      ]
+    }
+  ] 
+}

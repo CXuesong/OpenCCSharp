@@ -1,0 +1,11 @@
+{
+  "From": "ja-Hani-kyujitai",
+  "To": "ja-Hani-shinjitai",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "JPVariants.txt"
+      ]
+    }
+  ] 
+}
