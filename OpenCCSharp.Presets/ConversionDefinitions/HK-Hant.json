@@ -1,0 +1,12 @@
+{
+  "From": "zh-Hant-HK",
+  "To": "zh-Hant",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "HKVariantsRevPhrases.txt",
+        "HKVariants.txt|Reverse"
+      ]
+    }
+  ] 
+}

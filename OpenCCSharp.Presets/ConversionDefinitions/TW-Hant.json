@@ -1,0 +1,15 @@
+{
+  "From": "zh-Hant-TW",
+  "To": "zh-Hans",
+  "ConversionSteps": [
+    {
+      "Dictionaries": [
+        "TWVariants.txt|Reverse",
+        "TWPhrasesIT.txt|Reverse",
+        "TWPhrasesName.txt|Reverse",
+        "TWPhrasesOther.txt|Reverse",
+        "TWVariantsRevPhrases.txt"
+      ]
+    }
+  ] 
+}

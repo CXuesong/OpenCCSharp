@@ -20,7 +20,9 @@ public static class ChineseConversionPresets
             (ChineseConversionVariant.Hant, ChineseConversionVariant.HK) => "Hant-HK.json",
             (ChineseConversionVariant.Hant, ChineseConversionVariant.TW) => "Hant-TW.json",
             (ChineseConversionVariant.HK, ChineseConversionVariant.Hans) => "HK-Hans.json",
+            (ChineseConversionVariant.HK, ChineseConversionVariant.Hant) => "HK-Hant.json",
             (ChineseConversionVariant.TW, ChineseConversionVariant.Hans) => "TW-Hans.json",
+            (ChineseConversionVariant.TW, ChineseConversionVariant.Hant) => "TW-Hant.json",
             (ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjiatai) => "kyujitai-shinjitai.json",
             (ChineseConversionVariant.Shinjiatai, ChineseConversionVariant.Kyujitai) => "shinjitai-kyujitai.json",
             _ => null
@@ -48,8 +50,13 @@ public static class ChineseConversionPresets
     /// <item><term>Hans-Hant</term></item>
     /// <item><term>Hans-HK</term></item>
     /// <item><term>Hans-TW</term></item>
+    /// <item><term>Hant-Hans</term></item>
+    /// <item><term>Hant-HK</term></item>
+    /// <item><term>Hant-TW</term></item>
     /// <item><term>HK-Hans</term></item>
+    /// <item><term>HK-Hant</term></item>
     /// <item><term>TW-Hans</term></item>
+    /// <item><term>TW-Hant</term></item>
     /// <item><term>Kyujitai-Shinjiatai</term></item>
     /// <item><term>Shinjiatai-Kyujitai</term></item>
     /// </list>
