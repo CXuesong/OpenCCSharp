@@ -51,8 +51,8 @@ public class ConverterTests : UnitTestsBase
     [InlineData(ChineseConversionVariant.HK, ChineseConversionVariant.Hant, "hk2t")]
     [InlineData(ChineseConversionVariant.TW, ChineseConversionVariant.Hans, "tw2sp")]
     [InlineData(ChineseConversionVariant.TW, ChineseConversionVariant.Hant, "tw2t")]
-    [InlineData(ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjiatai, "t2jp")]
-    [InlineData(ChineseConversionVariant.Shinjiatai, ChineseConversionVariant.Kyujitai, "jp2t")]
+    [InlineData(ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjitai, "t2jp")]
+    [InlineData(ChineseConversionVariant.Shinjitai, ChineseConversionVariant.Kyujitai, "jp2t")]
     public async Task OpenCCTest(ChineseConversionVariant from, ChineseConversionVariant to, string caseSetName)
     {
         var converter = await ChineseConversionPresets.GetConverterAsync(from, to);

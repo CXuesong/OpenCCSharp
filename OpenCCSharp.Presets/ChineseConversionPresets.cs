@@ -23,8 +23,8 @@ public static class ChineseConversionPresets
             (ChineseConversionVariant.HK, ChineseConversionVariant.Hant) => "HK-Hant.json",
             (ChineseConversionVariant.TW, ChineseConversionVariant.Hans) => "TW-Hans.json",
             (ChineseConversionVariant.TW, ChineseConversionVariant.Hant) => "TW-Hant.json",
-            (ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjiatai) => "kyujitai-shinjitai.json",
-            (ChineseConversionVariant.Shinjiatai, ChineseConversionVariant.Kyujitai) => "shinjitai-kyujitai.json",
+            (ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjitai) => "kyujitai-shinjitai.json",
+            (ChineseConversionVariant.Shinjitai, ChineseConversionVariant.Kyujitai) => "shinjitai-kyujitai.json",
             _ => null
         };
 
@@ -57,7 +57,7 @@ public static class ChineseConversionPresets
     /// <item><term>HK-Hant</term></item>
     /// <item><term>TW-Hans</term></item>
     /// <item><term>TW-Hant</term></item>
-    /// <item><term>Kyujitai-Shinjiatai</term></item>
+    /// <item><term>Kyujitai-Shinjitai</term></item>
     /// <item><term>Shinjiatai-Kyujitai</term></item>
     /// </list>
     /// <para>Use <see cref="IsConversionSupported"/> to determine whether a conversion pair is supported.</para>
@@ -88,10 +88,10 @@ public enum ChineseConversionVariant
     Hans,
     /// <summary>(OpenCC standard) Traditional Chinese.（繁體中文）</summary>
     Hant,
-    /// <summary>Japanese Kanji (Kyujitai).【旧字体（きゅうじたい）】</summary>
+    /// <summary>Japanese Kanji (Kyujitai).（旧字体 / きゅうじたい）</summary>
     Kyujitai,
-    /// <summary>Japanese Kanji (Shinjitai).【新字体（しんじたい）】</summary>
-    Shinjiatai,
+    /// <summary>Japanese Kanji (Shinjitai).（新字体 / しんじたい）</summary>
+    Shinjitai,
     /// <summary>Traditional Chinese, with character/phrase variants in Hongkong.（香港繁體）</summary>
     HK,
     /// <summary>Traditional Chinese, with character/phrase variants in Taiwan.（台灣正體）</summary>

@@ -18,8 +18,8 @@ public class ConverterPresetBenchmarks
     [Arguments(ChineseConversionVariant.HK, ChineseConversionVariant.Hant)]
     [Arguments(ChineseConversionVariant.TW, ChineseConversionVariant.Hans)]
     [Arguments(ChineseConversionVariant.TW, ChineseConversionVariant.Hant)]
-    [Arguments(ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjiatai)]
-    [Arguments(ChineseConversionVariant.Shinjiatai, ChineseConversionVariant.Kyujitai)]
+    [Arguments(ChineseConversionVariant.Kyujitai, ChineseConversionVariant.Shinjitai)]
+    [Arguments(ChineseConversionVariant.Shinjitai, ChineseConversionVariant.Kyujitai)]
     public async ValueTask PresetLoadTest(ChineseConversionVariant fromVariant, ChineseConversionVariant toVariant)
     {
         await ChineseConversionPresets.GetConverterAsync(fromVariant, toVariant);
