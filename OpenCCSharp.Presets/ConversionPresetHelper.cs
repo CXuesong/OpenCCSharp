@@ -36,15 +36,43 @@ internal static class ConversionPresetHelper
                 if (rs == null)
                     throw new MissingManifestResourceException($"Failed to retrieve the manifest resource: {resourceName}.");
 
+                // Merge small char arrays into large char pools to reduce 16B per object overhead.
+                var charPool = GC.AllocateUninitializedArray<char>(Math.Clamp((int)(rs.Length / 8), 32, 512 * 1024));
+                var charPoolPos = 0;
+                var charPoolLengthSum = charPool.Length;
+                Memory<char> AllocateCharPoolMemory(int size)
+                {
+                    if (charPool.Length - charPoolPos < size)
+                    {
+                        // Note that StreamReader in EnumEntriesFromAsync has its own buffer...
+                        var readerPosGuess = rs.Position >= rs.Length ? Math.Max(0, rs.Length - 256) : Math.Max(0, rs.Position - 512);
+                        // Estimate how large the next pool should be.
+                        charPool = GC.AllocateUninitializedArray<char>(Math.Clamp(
+                            (int)((float)charPoolLengthSum / readerPosGuess * (rs.Length - readerPosGuess)),
+                            Math.Max(64, size), 512 * 1024));
+                        charPoolLengthSum += charPool.Length;
+                        charPoolPos = 0;
+                    }
+                    var m = charPool.AsMemory(charPoolPos, size);
+                    charPoolPos += size;
+                    return m;
+                }
                 await foreach (var (k, v) in PlainTextConversionLookupTable.EnumEntriesFromAsync(rs))
                 {
                     if (reverse)
                     {
-                        foreach (var v1 in v) dict.TryAdd(v1, k.ToArray());
+                        foreach (var v1 in v)
+                        {
+                            var m = AllocateCharPoolMemory(k.Length);
+                            k.CopyTo(m);
+                            dict.TryAdd(v1, m);
+                        }
                     }
                     else
                     {
-                        dict.TryAdd(k, v[0].ToArray());
+                        var m = AllocateCharPoolMemory(v[0].Length);
+                        v[0].CopyTo(m);
+                        dict.TryAdd(k, m);
                     }
                 }
             }
