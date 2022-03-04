@@ -43,6 +43,10 @@ jobs:
       - name: Benchmark
         shell: pwsh
         run: "./OpenCCSharp.Commons/CI/Benchmark.ps1 -Configuration ${{ matrix.config }}"
+      - name: Benchmark report
+        if: always()
+        shell: pwsh
+        run: "./OpenCCSharp.Commons/CI/BenchmarkReport.ps1"
       - name: Upload benchmark result
         if: always()
         uses: actions/upload-artifact@v2
