@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CXuesong.TriesSharp" Version="0.0.1-int.0" />
+    <PackageReference Include="CXuesong.TriesSharp" Version="0.0.1-int.1" />
   </ItemGroup>
 
 </Project>
