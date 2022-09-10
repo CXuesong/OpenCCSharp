@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using OpenCCSharp.Conversion;
 using OpenCCSharp.Presets;
-using OpenCCSharp.UnitTest.TestCases;
-using Xunit;
 
 namespace OpenCCSharp.UnitTest.Benchmarks;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OpenCCSharp.Conversion;
+﻿namespace OpenCCSharp.Conversion;
 
 public interface IScriptLexer
 {

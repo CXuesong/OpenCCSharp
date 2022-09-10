@@ -1,9 +1,6 @@
 using System.Threading.Tasks;
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Running;
 using OpenCCSharp.Conversion;
 using OpenCCSharp.Presets;
-using OpenCCSharp.UnitTest.Benchmarks;
 using Xunit;
 using Xunit.Abstractions;
 

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Concurrent;
+using System.Numerics;
 using System.Resources;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using OpenCCSharp.Conversion;
 
 namespace OpenCCSharp.Presets;
@@ -37,7 +33,7 @@ internal static class ConversionPresetHelper
                     throw new MissingManifestResourceException($"Failed to retrieve the manifest resource: {resourceName}.");
 
                 // Merge small char arrays into large char pools to reduce 16B per object overhead.
-                var charPool = GC.AllocateUninitializedArray<char>(Math.Clamp((int)(rs.Length / 8), 32, 512 * 1024));
+                var charPool = GC.AllocateUninitializedArray<char>((int)BitOperations.RoundUpToPowerOf2(Math.Clamp((uint)(rs.Length / 8), 32, 512 * 1024)));
                 var charPoolPos = 0;
                 var charPoolLengthSum = charPool.Length;
                 Memory<char> AllocateCharPoolMemory(int size)
@@ -47,9 +43,9 @@ internal static class ConversionPresetHelper
                         // Note that StreamReader in EnumEntriesFromAsync has its own buffer...
                         var readerPosGuess = rs.Position >= rs.Length ? Math.Max(0, rs.Length - 256) : Math.Max(0, rs.Position - 512);
                         // Estimate how large the next pool should be.
-                        charPool = GC.AllocateUninitializedArray<char>(Math.Clamp(
-                            (int)((float)charPoolLengthSum / readerPosGuess * (rs.Length - readerPosGuess)),
-                            Math.Max(64, size), 512 * 1024));
+                        charPool = GC.AllocateUninitializedArray<char>((int)BitOperations.RoundUpToPowerOf2(Math.Clamp(
+                            (uint)((float)charPoolLengthSum / readerPosGuess * (rs.Length - readerPosGuess)),
+                            Math.Max(64, (uint)size), 512 * 1024)));
                         charPoolLengthSum += charPool.Length;
                         charPoolPos = 0;
                     }
