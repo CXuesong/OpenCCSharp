@@ -19,22 +19,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OpenCCDictionaryDir>$(ProjectDir)../vendor/OpenCC/data/dictionary</OpenCCDictionaryDir>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OpenCCSharp.Conversion\OpenCCSharp.Conversion.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ConversionDefinitions\*" />
-    <EmbeddedResource Include="ConversionDefinitions\*" />
-    <EmbeddedResource Include="$(IntermediateOutputPath)/ConversionDictionaries/**/*" Link="ConversionDictionaries/%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Remove="ConversionDefinitions\**\*" />
+    <None Remove="ConversionDictionaries\**\*" />
+    <EmbeddedResource Include="ConversionDefinitions\**\*" />
+    <EmbeddedResource Include="ConversionDictionaries\**\*" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet run --project &quot;$(ProjectDir)../OpenCCSharp.BuildTools&quot; -- build-preset-dictionaries &quot;PresetDictionaryList.txt&quot; &quot;$(OpenCCDictionaryDir)&quot; &quot;$(IntermediateOutputPath)/ConversionDictionaries&quot;" UseUtf8Encoding="Always" />
+    <Error Condition="!Exists('$(ProjectDir)/ConversionDictionaries/')" Text="ConversionDictionaries folder is missing. Please execute OpenCCSharp.Commons/CI/PreBuild.ps1 to generate the folder." />
   </Target>
 
 </Project>

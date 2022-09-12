@@ -20,8 +20,8 @@ internal static class BuildPresetDictionariesCommand
         command.SetHandler(context => Execute(context,
             context.ParseResult.GetValueForArgument(dictionaryListFileArg),
             // Somehow the trailing quotation marks will be included in the parameter
-            context.ParseResult.GetValueForArgument(sourceDirArg).FullName.Trim(' ', '"'),
-            context.ParseResult.GetValueForArgument(targetDirArg).FullName.Trim(' ', '"')
+            context.ParseResult.GetValueForArgument(sourceDirArg).FullName,
+            context.ParseResult.GetValueForArgument(targetDirArg).FullName
         ));
         return command;
     }

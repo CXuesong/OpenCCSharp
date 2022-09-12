@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 _private
+OpenCCSharp.Presets/ConversionDictionaries
