@@ -4,8 +4,8 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "TSPhrases.txt",
-        "TSCharacters.txt"
+        "TSPhrases.tris",
+        "TSCharacters.tris"
       ]
     }
   ] 

@@ -4,8 +4,8 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "HKVariantsRevPhrases.txt",
-        "HKVariants.txt|Reverse"
+        "HKVariantsRevPhrases.tris",
+        "HKVariants.rev.tris"
       ]
     }
   ] 

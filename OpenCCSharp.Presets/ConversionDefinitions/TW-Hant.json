@@ -4,11 +4,11 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "TWVariants.txt|Reverse",
-        "TWPhrasesIT.txt|Reverse",
-        "TWPhrasesName.txt|Reverse",
-        "TWPhrasesOther.txt|Reverse",
-        "TWVariantsRevPhrases.txt"
+        "TWVariants.rev.tris",
+        "TWPhrasesIT.rev.tris",
+        "TWPhrasesName.rev.tris",
+        "TWPhrasesOther.rev.tris",
+        "TWVariantsRevPhrases.tris"
       ]
     }
   ] 

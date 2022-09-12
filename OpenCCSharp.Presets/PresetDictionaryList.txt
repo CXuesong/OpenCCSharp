@@ -1,0 +1,23 @@
+﻿# See BuildPresetDictionariesCommand for syntax
+
+HKVariants.txt -> .tris
+HKVariantsRevPhrases.txt -> .tris
+JPShinjitaiCharacters.txt -> .tris
+JPShinjitaiPhrases.txt -> .tris
+JPVariants.txt -> .tris
+STCharacters.txt -> .tris
+STPhrases.txt -> .tris
+TSCharacters.txt -> .tris
+TSPhrases.txt -> .tris
+TWPhrasesIT.txt -> .tris
+TWPhrasesName.txt -> .tris
+TWPhrasesOther.txt -> .tris
+TWVariants.txt -> .tris
+TWVariantsRevPhrases.txt -> .tris
+
+HKVariants.txt | Reverse -> .rev.tris
+JPVariants.txt | Reverse -> .rev.tris
+TWVariants.txt | Reverse -> .rev.tris
+TWPhrasesIT.txt | Reverse -> .rev.tris
+TWPhrasesName.txt | Reverse -> .rev.tris
+TWPhrasesOther.txt | Reverse -> .rev.tris

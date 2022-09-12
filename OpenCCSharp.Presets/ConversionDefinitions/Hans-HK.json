@@ -4,13 +4,13 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "STPhrases.txt",
-        "STCharacters.txt"
+        "STPhrases.tris",
+        "STCharacters.tris"
       ]
     },
     {
       "Dictionaries": [
-        "HKVariants.txt"
+        "HKVariants.tris"
       ]
     }
   ] 

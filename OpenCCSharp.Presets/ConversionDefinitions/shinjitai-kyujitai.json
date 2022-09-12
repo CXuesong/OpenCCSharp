@@ -4,9 +4,9 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "JPShinjitaiPhrases.txt",
-        "JPShinjitaiCharacters.txt",
-        "JPVariants.txt|Reverse"
+        "JPShinjitaiPhrases.tris",
+        "JPShinjitaiCharacters.tris",
+        "JPVariants.rev.tris"
       ]
     }
   ]

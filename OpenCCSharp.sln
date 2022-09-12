@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.UnitTest", "OpenCCSharp.UnitTest\OpenCCSharp.UnitTest.csproj", "{A4269D58-B4E5-42E5-B3EE-A2CB69F449E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.Presets", "OpenCCSharp.Presets\OpenCCSharp.Presets.csproj", "{509C2A16-D8D5-4480-BE5E-6FDE15138098}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6EA69589-2D78-4782-B3D9-F441125B6847} = {6EA69589-2D78-4782-B3D9-F441125B6847}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.Benchmarking", "OpenCCSharp.Benchmarking\OpenCCSharp.Benchmarking.csproj", "{45BCB097-6262-4E04-A87D-F6FCBB94CF6C}"
 EndProject
@@ -20,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\OpenCCSharp.yml = .github\workflows\OpenCCSharp.yml
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCCSharp.BuildTools", "OpenCCSharp.BuildTools\OpenCCSharp.BuildTools.csproj", "{6EA69589-2D78-4782-B3D9-F441125B6847}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +48,10 @@ Global
 		{45BCB097-6262-4E04-A87D-F6FCBB94CF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45BCB097-6262-4E04-A87D-F6FCBB94CF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45BCB097-6262-4E04-A87D-F6FCBB94CF6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA69589-2D78-4782-B3D9-F441125B6847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA69589-2D78-4782-B3D9-F441125B6847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA69589-2D78-4782-B3D9-F441125B6847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA69589-2D78-4782-B3D9-F441125B6847}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

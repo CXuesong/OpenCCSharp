@@ -19,17 +19,22 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OpenCCDictionaryDir>$(ProjectDir)../vendor/OpenCC/data/dictionary</OpenCCDictionaryDir>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\OpenCCSharp.Conversion\OpenCCSharp.Conversion.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="$(ProjectDir)../vendor/OpenCC/data/dictionary/**/*" Link="ConversionDictionaries/%(RecursiveDir)%(Filename)%(Extension)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="ConversionDefinitions\*" />
     <EmbeddedResource Include="ConversionDefinitions\*" />
+    <EmbeddedResource Include="$(IntermediateOutputPath)/ConversionDictionaries/**/*" Link="ConversionDictionaries/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet run --project &quot;$(ProjectDir)../OpenCCSharp.BuildTools&quot; -- build-preset-dictionaries &quot;PresetDictionaryList.txt&quot; &quot;$(OpenCCDictionaryDir)&quot; &quot;$(IntermediateOutputPath)/ConversionDictionaries&quot;" UseUtf8Encoding="Always" />
+  </Target>
 
 </Project>

@@ -4,10 +4,10 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "TWVariants.txt",
-        "TWPhrasesIT.txt",
-        "TWPhrasesName.txt",
-        "TWPhrasesOther.txt"
+        "TWVariants.tris",
+        "TWPhrasesIT.tris",
+        "TWPhrasesName.tris",
+        "TWPhrasesOther.tris"
       ]
     }
   ] 

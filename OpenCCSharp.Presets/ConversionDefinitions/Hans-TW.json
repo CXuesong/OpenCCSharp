@@ -4,16 +4,16 @@
   "ConversionSteps": [
     {
       "Dictionaries": [
-        "STPhrases.txt",
-        "STCharacters.txt"
+        "STPhrases.tris",
+        "STCharacters.tris"
       ]
     },
     {
       "Dictionaries": [
-        "TWVariants.txt",
-        "TWPhrasesIT.txt",
-        "TWPhrasesName.txt",
-        "TWPhrasesOther.txt"
+        "TWVariants.tris",
+        "TWPhrasesIT.tris",
+        "TWPhrasesName.tris",
+        "TWPhrasesOther.tris"
       ]
     }
   ] 
