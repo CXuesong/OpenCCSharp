@@ -8,6 +8,8 @@ trap {
     Exit 1
 }
 
+&"$PSScriptRoot/PreBuild.ps1"
+
 # Assumes $PWD is the repo root
 dotnet build OpenCCSharp.sln -c $Configuration
 

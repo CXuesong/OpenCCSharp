@@ -35,7 +35,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: |
-            5.0.x
             6.0.x
       - name: Build
         shell: pwsh
@@ -45,7 +44,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "OpenCCSharp-build-${{ matrix.os }}-${{ matrix.config }}"
-          path: ./OpenCCSharp.*/bin/
+          path: |
+            ./OpenCCSharp.*/bin/
+            ./OpenCCSharp.*/obj/
       - name: Upload NuGet packages
         if: always()
         uses: actions/upload-artifact@v2
