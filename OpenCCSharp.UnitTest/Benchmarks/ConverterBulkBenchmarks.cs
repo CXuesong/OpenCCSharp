@@ -25,6 +25,7 @@ public class ConverterBulkBenchmarks
 
         static string BuildRepeatedSequence(int iterations)
         {
+            // https://github.com/BYVoid/OpenCC/blob/556ed22496d650bd0b13b6c163be9814637970ae/src/benchmark/Performance.cpp#L101
             // Length = 27
             const string stem = "Open Chinese Convert 開放中文轉換";
             var sb = new StringBuilder(stem.Length * iterations);
