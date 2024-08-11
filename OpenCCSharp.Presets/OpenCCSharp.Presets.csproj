@@ -14,9 +14,6 @@
       This project is inspired by OpenCC project, and used similar approach in word segmentation.
       This project also used the conversion dictionary in the aforementioned project.
     </Description>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +25,10 @@
     <None Remove="ConversionDictionaries\**\*" />
     <EmbeddedResource Include="ConversionDefinitions\**\*" />
     <EmbeddedResource Include="ConversionDictionaries\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

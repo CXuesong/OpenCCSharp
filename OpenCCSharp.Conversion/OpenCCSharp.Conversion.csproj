@@ -14,13 +14,14 @@
       OpenCCSharp is a .NET library for Chinese handwritten script conversion.
       This project is inspired by OpenCC project, and used similar approach in word segmentation.
     </Description>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CXuesong.TriesSharp" Version="0.0.1-int.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
